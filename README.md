@@ -6,23 +6,20 @@
   No backend required.
 </p>
 
+<h2>Public Frontend Mode</h2>
+<p>
+  <strong>index.html is now fully public.</strong> It reads directly from local <code>data.json</code>
+  and does not require owner/repo/token setup for visitors.
+</p>
+
 <h2>Connect Your Own Repo + Key (2 minutes)</h2>
 
 <ol>
   <li>Copy this project into your own GitHub repository.</li>
   <li>Make sure <code>data.json</code> exists at the repository root.</li>
-  <li>Open <code>admin.html</code> and sign in with username, repo, branch (usually <code>main</code>), and PAT.</li>
-  <li>Open <code>index.html</code>; owner/repo/branch are auto-saved from admin login.</li>
+  <li>Open <code>index.html</code>; it is public and reads local <code>data.json</code> directly.</li>
+  <li>Use <code>admin.html</code> only if you want GitHub-based editing and sync.</li>
 </ol>
-
-<p>Optional default configuration in <code>index.html</code>:</p>
-
-<pre><code>&lt;script&gt;
-  window.CMS_DEFAULT_OWNER = 'your-github-username';
-  window.CMS_DEFAULT_REPO = 'your-repo-name';
-  window.CMS_DEFAULT_BRANCH = 'main';
-&lt;/script&gt;
-</code></pre>
 
 <h2>Features</h2>
 
@@ -126,18 +123,18 @@ git push origin main
 
 <h3>Step 5: Access the App</h3>
 <ul>
-  <li>Frontend: <code>https://username.github.io/repo-name/index.html?owner=username&amp;repo=repo-name&amp;branch=main</code></li>
+  <li>Frontend: <code>https://username.github.io/repo-name/index.html</code></li>
   <li>Admin: <code>https://username.github.io/repo-name/admin.html</code></li>
 </ul>
 
-<p>Or sign in once in <code>admin.html</code>; frontend reuses saved owner/repo/branch.</p>
+<p>No frontend repo/token configuration is required.</p>
 
 <h2>How to Use</h2>
 
 <h3>Frontend</h3>
 <ol>
   <li>Open <code>index.html</code> or your deployed frontend URL.</li>
-  <li>Data loads from GitHub <code>data.json</code> in selected branch.</li>
+  <li>Data loads directly from local/public <code>data.json</code>.</li>
   <li>Use search, category filter, sort, view toggle, and admin link.</li>
 </ol>
 

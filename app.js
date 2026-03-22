@@ -1,6 +1,6 @@
 /**
  * Frontend App Logic
- * Displays products from GitHub-hosted JSON
+ * Displays products from local public data.json
  */
 
 let appData = { items: [] };
@@ -12,64 +12,27 @@ const uiState = {
 };
 
 /**
- * Fetch data from GitHub
+ * Fetch data from local data.json
  */
-async function fetchDataFromGitHub() {
+async function fetchPublicData() {
   try {
-    // Priority order to find owner and repo:
-    // 1. URL parameters: ?owner=X&repo=Y
-    // 2. localStorage: from admin panel login
-    // 3. Window defaults: set in index.html
-    
-    let owner = null;
-    let repo = null;
-    let branch = null;
-    
-    // Priority 1: URL parameters
-    const params = new URLSearchParams(window.location.search);
-    const urlOwner = params.get('owner');
-    const urlRepo = params.get('repo');
-    const urlBranch = params.get('branch');
-    if (urlOwner) owner = urlOwner;
-    if (urlRepo) repo = urlRepo;
-    if (urlBranch) branch = urlBranch;
-    
-    // Priority 2: localStorage (from admin.html login)
-    if (!owner) owner = localStorage.getItem('cms_owner');
-    if (!repo) repo = localStorage.getItem('cms_repo');
-    if (!branch) branch = localStorage.getItem('cms_branch');
-    
-    // Priority 3: Window defaults (set in index.html script tag)
-    if (!owner) owner = window.CMS_DEFAULT_OWNER;
-    if (!repo) repo = window.CMS_DEFAULT_REPO;
-    if (!branch) branch = window.CMS_DEFAULT_BRANCH || 'main';
-    
-    // Check if we have both owner and repo
-    if (!owner || !repo) {
-      showError(`No repository configured.
+    const response = await fetch('data.json', { cache: 'no-store' });
 
-    To connect your own repo:
-    1) Sign in once at admin.html (auto-saves owner/repo/branch), or
-    2) Open with URL parameters: index.html?owner=USERNAME&repo=REPO&branch=main, or
-    3) Set window.CMS_DEFAULT_OWNER / window.CMS_DEFAULT_REPO in index.html.`);
-      return false;
+    if (!response.ok) {
+      throw new Error(`Unable to load data.json (${response.status})`);
     }
 
-    // Initialize API without token (works for public repos)
-    const github = new GitHubAPI(owner, repo, branch, null);
+    const data = await response.json();
 
-    // Fetch data
-    const fetchedData = await github.fetchData();
-    appData = fetchedData.data;
+    if (!data || !Array.isArray(data.items)) {
+      throw new Error('Invalid data.json format: expected { "items": [] }');
+    }
 
-    // Store for future use
-    localStorage.setItem('cms_owner', owner);
-    localStorage.setItem('cms_repo', repo);
-    localStorage.setItem('cms_branch', branch);
+    appData = data;
 
     return true;
   } catch (error) {
-    showError(`❌ Failed to load data: ${error.message}`);
+    showError(`Failed to load public data: ${error.message}`);
     console.error(error);
     return false;
   }
@@ -293,7 +256,7 @@ async function initApp() {
   }
 
   // Fetch data
-  const success = await fetchDataFromGitHub();
+  const success = await fetchPublicData();
 
   // Hide loading
   if (loadingDiv) {
