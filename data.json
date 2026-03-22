@@ -23,6 +23,14 @@
       "description": "Hello world",
       "image": "https://lorempicsum.photos/seed/picsum/200/300",
       "category": "Electronics"
+    },
+    {
+      "id": "prod_1774165587990_448",
+      "name": "Another test",
+      "price": 12.99,
+      "description": "",
+      "image": "https://picsum.photos/id/238/2000/1800",
+      "category": "Sample"
     }
   ]
 }
