@@ -50,12 +50,41 @@
             <option value="all">All Categories</option>
           </select>
 
+          <!-- Min Price -->
+          <input
+            type="number"
+            id="min-price"
+            placeholder="Min price"
+            min="0"
+            step="0.01"
+            aria-label="Minimum price"
+          >
+
+          <!-- Max Price -->
+          <input
+            type="number"
+            id="max-price"
+            placeholder="Max price"
+            min="0"
+            step="0.01"
+            aria-label="Maximum price"
+          >
+
           <!-- Sort -->
           <select id="sort-select" aria-label="Sort by">
             <option value="name-asc">Name (A-Z)</option>
             <option value="name-desc">Name (Z-A)</option>
             <option value="price-asc">Price (Low-High)</option>
             <option value="price-desc">Price (High-Low)</option>
+            <option value="random">Random</option>
+          </select>
+
+          <!-- Page Size -->
+          <select id="page-size" aria-label="Items per page">
+            <option value="6">6 / page</option>
+            <option value="12" selected>12 / page</option>
+            <option value="18">18 / page</option>
+            <option value="24">24 / page</option>
           </select>
 
           <!-- View Toggle -->
@@ -63,6 +92,17 @@
             <option value="cards">Cards View</option>
             <option value="table">Table View</option>
           </select>
+
+          <label class="inline-toggle" for="favorites-only">
+            <input type="checkbox" id="favorites-only">
+            Favorites only
+          </label>
+
+          <button id="clear-filters" class="btn btn-secondary" type="button">Clear</button>
+          <button id="shuffle-btn" class="btn btn-secondary" type="button">Shuffle</button>
+          <button id="random-pick-btn" class="btn btn-secondary" type="button">Random Pick</button>
+          <button id="share-view-btn" class="btn btn-secondary" type="button">Share View</button>
+          <button id="export-visible-btn" class="btn btn-secondary" type="button">Export Visible</button>
 
           <!-- Admin Link -->
           <a href="admin.html" class="btn btn-secondary">
@@ -72,10 +112,28 @@
         </div>
       </div>
 
+      <div class="section">
+        <div class="summary-bar" id="summary-bar">
+          <div id="results-summary">0 results</div>
+          <div id="catalog-meta">Ready</div>
+        </div>
+      </div>
+
       <!-- Items Container -->
       <div class="section">
         <div id="items-container" class="items-grid">
           <!-- Items populated dynamically -->
+        </div>
+      </div>
+
+      <div class="section">
+        <div id="pagination" class="pagination" aria-label="Pagination controls"></div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Recently Viewed</h2>
+        <div id="recently-viewed" class="recent-grid">
+          <p class="empty-state">No recently viewed items</p>
         </div>
       </div>
     </div>

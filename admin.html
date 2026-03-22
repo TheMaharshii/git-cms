@@ -3,170 +3,225 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - Product Manager CMS</title>
+  <title>Git-CMS Admin</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container">
       <div class="brand-row">
-        <img src="assets/logo.svg" alt="CMS Logo" class="brand-logo" width="44" height="44">
+        <img src="assets/logo.svg" alt="Git-CMS Logo" class="brand-logo" width="44" height="44">
         <div>
-          <h1>Admin Panel</h1>
-          <p class="header-subtitle">Manage products in your GitHub repository</p>
+          <h1>Git-CMS Admin</h1>
+          <p class="header-subtitle">Advanced management for your public catalog</p>
         </div>
       </div>
     </div>
   </header>
 
   <div class="container">
-    <!-- Status Message -->
     <div id="status-message" class="message" role="alert"></div>
 
-    <!-- Loading Spinner -->
     <div id="loading-spinner" class="loading-spinner">
       <div class="spinner"></div>
     </div>
 
-    <!-- Authentication Section -->
     <section id="auth-section" class="section">
-      <form id="settings-form">
-        <div class="auth-card">
-          <h2 class="section-title">
-            <img src="assets/icon-auth.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-            GitHub Authentication
-          </h2>
-          <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
-            Enter your GitHub credentials to manage your products. Your token is stored only in memory and never saved to disk.
-          </p>
+      <form id="settings-form" class="auth-card">
+        <h2 class="section-title">
+          <img src="assets/icon-auth.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
+          GitHub Authentication
+        </h2>
 
-          <div class="form-group">
-            <label for="github-username">
-              <img src="assets/icon-user.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-              GitHub Username
-            </label>
-            <input type="text" id="github-username" placeholder="your-username" required aria-label="GitHub username">
-          </div>
+        <p class="admin-muted">Enter repository details. Token stays in-memory during this session.</p>
 
-          <div class="form-group">
-            <label for="github-repo">
-              <img src="assets/icon-repo.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-              Repository Name
-            </label>
-            <input type="text" id="github-repo" placeholder="your-repo" required aria-label="GitHub repository name">
-          </div>
+        <div class="form-group">
+          <label for="github-username">
+            <img src="assets/icon-user.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
+            GitHub Username
+          </label>
+          <input type="text" id="github-username" placeholder="your-username" required>
+        </div>
 
-          <div class="form-group">
-            <label for="github-branch">
-              <img src="assets/icon-branch.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-              Branch (default: main)
-            </label>
-            <input type="text" id="github-branch" placeholder="main" value="main" aria-label="Git branch name">
-          </div>
+        <div class="form-group">
+          <label for="github-repo">
+            <img src="assets/icon-repo.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
+            Repository Name
+          </label>
+          <input type="text" id="github-repo" placeholder="your-repo" required>
+        </div>
 
-          <div class="form-group">
-            <label for="github-token">
-              <img src="assets/icon-lock.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-              Personal Access Token (PAT)
-            </label>
-            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" required aria-label="GitHub Personal Access Token">
-            <small style="color: var(--text-tertiary); margin-top: 0.5rem; display: block;">
-              Need a token? <a href="https://github.com/settings/tokens" target="_blank">Create one here</a> with 'contents' scope.
-              Your token is never stored - only kept in memory during this session.
-            </small>
-          </div>
+        <div class="form-group">
+          <label for="github-branch">
+            <img src="assets/icon-branch.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
+            Branch
+          </label>
+          <input type="text" id="github-branch" placeholder="main" value="main">
+        </div>
 
-          <div class="btn-group">
-            <button type="submit" class="btn btn-primary">Sign In</button>
-            <button type="button" id="validate-btn" class="btn btn-secondary">Validate Repository</button>
-          </div>
+        <div class="form-group">
+          <label for="github-token">
+            <img src="assets/icon-lock.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
+            Personal Access Token
+          </label>
+          <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" required>
+          <label class="inline-toggle admin-toggle-inline" for="show-token">
+            <input type="checkbox" id="show-token">
+            Show token
+          </label>
+          <small class="admin-muted-small">
+            Need a token? <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer">Create one</a> with contents write scope.
+          </small>
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary">Sign In</button>
+          <button type="button" id="validate-btn" class="btn btn-secondary">Validate Repository</button>
         </div>
       </form>
     </section>
 
-    <!-- Admin Panel Section -->
     <section id="admin-section" class="section">
-      <!-- Admin Header -->
       <div class="admin-header">
         <div>
-          <h2 class="section-title">
-            <img src="assets/icon-plus.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-            Product Management
-          </h2>
-          <div class="current-user">
-            Current: <span id="current-user">-</span>
-          </div>
+          <h2 class="section-title">Catalog Management</h2>
+          <div class="current-user">Current: <span id="current-user">-</span></div>
         </div>
-        <button id="logout-btn" class="btn btn-danger">
-          <img src="assets/icon-logout.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-          Sign Out
-        </button>
+        <div class="btn-group">
+          <button id="reload-data-btn" class="btn btn-secondary" type="button">Reload</button>
+          <button id="save-all-btn" class="btn btn-success" type="button">Save Changes</button>
+          <button id="logout-btn" class="btn btn-danger" type="button">
+            <img src="assets/icon-logout.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
+            Sign Out
+          </button>
+        </div>
       </div>
 
-      <!-- Add/Edit Item Form -->
+      <div class="section">
+        <div class="admin-stats-grid" id="admin-stats-grid">
+          <div class="admin-stat-card"><span>Total Items</span><strong id="stat-total-items">0</strong></div>
+          <div class="admin-stat-card"><span>Categories</span><strong id="stat-categories">0</strong></div>
+          <div class="admin-stat-card"><span>Avg Price</span><strong id="stat-avg-price">$0.00</strong></div>
+          <div class="admin-stat-card"><span>Total Value</span><strong id="stat-total-value">$0.00</strong></div>
+          <div class="admin-stat-card"><span>Missing Image</span><strong id="stat-missing-image">0</strong></div>
+          <div class="admin-stat-card"><span>Uncategorized</span><strong id="stat-uncategorized">0</strong></div>
+        </div>
+      </div>
+
       <div class="form-card">
         <h3>
           <img src="assets/icon-plus.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-          Add/Edit Product
+          Add / Edit Product
         </h3>
+
         <form id="item-form">
           <div class="form-row">
             <div class="form-group">
-              <label for="item-id">Product ID:</label>
-              <input type="text" id="item-id" placeholder="auto-generated" readonly>
+              <label for="item-id">Product ID</label>
+              <div class="inline-field">
+                <input type="text" id="item-id" placeholder="auto-generated">
+                <button id="generate-id-btn" class="btn btn-secondary btn-sm" type="button">New ID</button>
+              </div>
             </div>
             <div class="form-group">
-              <label for="item-name">Name: <span style="color: var(--danger-color);">*</span></label>
+              <label for="item-name">Name *</label>
               <input type="text" id="item-name" placeholder="Product name" required>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="item-price">Price:</label>
+              <label for="item-price">Price</label>
               <input type="number" id="item-price" placeholder="29.99" step="0.01" min="0">
             </div>
             <div class="form-group">
-              <label for="item-category">Category:</label>
+              <label for="item-category">Category</label>
               <input type="text" id="item-category" placeholder="Electronics">
             </div>
           </div>
 
           <div class="form-group">
-            <label for="item-image">Image URL:</label>
+            <label for="item-image">Image URL</label>
             <input type="url" id="item-image" placeholder="https://example.com/image.jpg">
+            <div class="image-preview-wrap" id="image-preview-wrap">
+              <img id="image-preview" alt="Image preview" loading="lazy">
+              <span id="image-preview-empty">No preview</span>
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="item-description">Description:</label>
+            <label for="item-description">Description</label>
             <textarea id="item-description" placeholder="Product description..."></textarea>
           </div>
 
           <div class="btn-group">
-            <button type="submit" id="form-submit-btn" class="btn btn-success">
-              <img src="assets/icon-plus.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-              Add Item
-            </button>
+            <button type="submit" id="form-submit-btn" class="btn btn-success">Add Item</button>
+            <button type="button" id="duplicate-current-btn" class="btn btn-secondary">Duplicate Current</button>
             <button type="button" id="form-reset-btn" class="btn btn-secondary">Clear</button>
+            <button type="button" id="restore-draft-btn" class="btn btn-secondary">Restore Draft</button>
+            <button type="button" id="clear-draft-btn" class="btn btn-secondary">Clear Draft</button>
           </div>
         </form>
       </div>
 
-      <!-- Items Table -->
       <div class="section">
-        <h3 style="margin: 1rem 0;"></h3>>
+        <h3 class="section-title">
           <img src="assets/icon-table.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
           Products List
         </h3>
 
-        <div style="margin-bottom: 1rem;">
-          <input type="text" id="search-input" placeholder="Search items..." style="max-width: 400px;" oninput="searchItems()">
+        <div class="admin-controls-grid">
+          <input type="text" id="search-input" placeholder="Search name, category, description...">
+          <select id="admin-category-filter">
+            <option value="all">All Categories</option>
+          </select>
+          <input type="number" id="admin-min-price" placeholder="Min price" min="0" step="0.01">
+          <input type="number" id="admin-max-price" placeholder="Max price" min="0" step="0.01">
+          <select id="admin-sort-select">
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+            <option value="price-asc">Price (Low-High)</option>
+            <option value="price-desc">Price (High-Low)</option>
+            <option value="category-asc">Category (A-Z)</option>
+          </select>
+          <select id="admin-page-size">
+            <option value="10">10 / page</option>
+            <option value="20" selected>20 / page</option>
+            <option value="50">50 / page</option>
+            <option value="100">100 / page</option>
+          </select>
+          <button id="admin-clear-filters" class="btn btn-secondary" type="button">Clear Filters</button>
+          <button id="validate-data-btn" class="btn btn-secondary" type="button">Validate Data</button>
+          <button id="normalize-categories-btn" class="btn btn-secondary" type="button">Normalize Categories</button>
+          <button id="dedupe-ids-btn" class="btn btn-secondary" type="button">Fix Duplicate IDs</button>
+          <button id="quick-sample-btn" class="btn btn-secondary" type="button">Quick Sample</button>
         </div>
 
+        <div class="bulk-row">
+          <label class="inline-toggle" for="select-visible-checkbox">
+            <input type="checkbox" id="select-visible-checkbox">
+            Select visible
+          </label>
+          <button id="bulk-delete-btn" class="btn btn-danger" type="button">Delete Selected</button>
+          <div class="inline-field">
+            <input type="text" id="bulk-category-input" placeholder="Set category for selected">
+            <button id="bulk-category-apply" class="btn btn-secondary" type="button">Apply</button>
+          </div>
+          <div class="inline-field">
+            <input type="number" id="bulk-price-input" placeholder="Price +/- %" step="0.1">
+            <button id="bulk-price-apply" class="btn btn-secondary" type="button">Adjust</button>
+          </div>
+          <button id="export-csv-btn" class="btn btn-info" type="button">Export CSV</button>
+          <button id="export-visible-json-btn" class="btn btn-info" type="button">Export Visible</button>
+        </div>
+
+        <div class="admin-summary" id="admin-summary">0 visible · 0 selected · Page 1</div>
+
         <div style="overflow-x: auto;">
-          <table>
+          <table class="items-table">
             <thead>
               <tr>
+                <th>Select</th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Price</th>
@@ -177,34 +232,53 @@
             </thead>
             <tbody id="items-table-body">
               <tr>
-                <td colspan="6" class="text-center">No items yet. Add one using the form above.</td>
+                <td colspan="7" class="text-center">No items yet.</td>
               </tr>
             </tbody>
           </table>
         </div>
+
+        <div id="admin-pagination" class="pagination"></div>
       </div>
 
-      <!-- Data Management -->
+      <div class="section">
+        <div class="btn-group">
+          <button id="undo-btn" class="btn btn-secondary" type="button">Undo</button>
+          <button id="redo-btn" class="btn btn-secondary" type="button">Redo</button>
+        </div>
+      </div>
+
       <div class="data-management">
         <h3>
           <img src="assets/icon-admin.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
           Data Management
         </h3>
+
         <div class="btn-group">
-          <button type="button" class="btn btn-info" onclick="exportData()">
+          <button type="button" class="btn btn-info" id="export-all-btn">
             <img src="assets/icon-download.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-            Export Data
+            Export All JSON
           </button>
+
           <label class="btn btn-info" style="margin-bottom: 0; cursor: pointer;">
             <img src="assets/icon-upload.svg" alt="" class="icon-sm" width="16" height="16" aria-hidden="true">
-            Import Data
-            <input type="file" accept=".json" onchange="importData(event)" style="display: none;">
+            Import JSON
+            <input id="import-file" type="file" accept=".json" style="display: none;">
           </label>
+
+          <select id="import-mode" style="max-width: 180px;">
+            <option value="replace">Import: Replace</option>
+            <option value="merge">Import: Merge</option>
+          </select>
         </div>
-        <p style="margin-top: 1rem; color: var(--text-tertiary); font-size: 0.9rem;">
-          Export to backup your data locally. Import to restore or bulk-load products.
-        </p>
+
+        <p class="admin-muted-small">Use merge to append imported items and auto-fix ID collisions. Use replace to overwrite all items.</p>
       </div>
+
+      <details class="json-preview-panel">
+        <summary>Live JSON Preview</summary>
+        <pre id="json-preview"></pre>
+      </details>
     </section>
   </div>
 
