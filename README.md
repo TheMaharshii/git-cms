@@ -1,48 +1,54 @@
-# Personal CMS / Product Manager
+<p align="center">
+  <img src="https://pbxt.replicate.delivery/2PX94viD6lJSDVayQrGyDH7CGu7IjQ6e8HEtOGDeelefXRdOC/out.png" alt="CMS Banner" width="100%" />
+</p>
 
-A lightweight product manager built with vanilla JavaScript that uses GitHub as the database (`data.json`). No backend required.
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-web-black?style=for-the-badge" alt="Platform Web" />
+  <img src="https://img.shields.io/badge/stack-vanilla_js-111827?style=for-the-badge&logo=javascript" alt="Vanilla JS" />
+  <a href="https://github.com/maharshimyriad/cms/stargazers"><img src="https://img.shields.io/github/stars/maharshimyriad/cms?style=for-the-badge" alt="GitHub Stars" /></a>
+  <a href="https://github.com/maharshimyriad/cms/network/members"><img src="https://img.shields.io/github/forks/maharshimyriad/cms?style=for-the-badge" alt="GitHub Forks" /></a>
+</p>
 
-## Connect Your Own Repo + Key (2 minutes)
+<h1>Personal CMS / Product Manager 🌟</h1>
 
-Use this exact flow to connect your own repository and Personal Access Token:
+<p>
+  Personal CMS is a lightweight GitHub-powered catalog manager built with vanilla JavaScript.
+  It uses <code>data.json</code> as the source of truth, with a clean frontend and a simple admin panel.
+  No backend required.
+</p>
 
-1. Copy this project into **your own GitHub repo**.
-2. Make sure `data.json` exists at the repo root.
-3. Open `admin.html` and sign in with:
-   - GitHub username
-   - Repository name
-   - Branch (usually `main`)
-   - Personal Access Token (PAT)
-4. After successful sign in, open `index.html`.
-   - Owner/repo/branch are auto-saved from admin login.
-   - No token is needed on frontend for public repos.
+<h2>Connect Your Own Repo + Key (2 minutes)</h2>
 
-Optional: set hard defaults in `index.html`:
+<ol>
+  <li>Copy this project into your own GitHub repository.</li>
+  <li>Make sure <code>data.json</code> exists at the repository root.</li>
+  <li>Open <code>admin.html</code> and sign in with username, repo, branch (usually <code>main</code>), and PAT.</li>
+  <li>Open <code>index.html</code>; owner/repo/branch are auto-saved from admin login.</li>
+</ol>
 
-```html
-<script>
+<p>Optional default configuration in <code>index.html</code>:</p>
+
+<pre><code>&lt;script&gt;
   window.CMS_DEFAULT_OWNER = 'your-github-username';
   window.CMS_DEFAULT_REPO = 'your-repo-name';
   window.CMS_DEFAULT_BRANCH = 'main';
-</script>
-```
+&lt;/script&gt;
+</code></pre>
 
-## Features
+<h2>Features</h2>
 
-✨ **Key Features:**
-- **Frontend Display Page** (`index.html`) - Browse products with search, filter, and sort
-- **Admin Panel** (`admin.html`) - Full CRUD operations (Create, Read, Update, Delete)
-- **GitHub as Database** - Uses GitHub API to store/retrieve data from `data.json`
-- **Secure Authentication** - Manual Personal Access Token (PAT) entry—token never stored on disk
-- **No Backend Required** - 100% client-side, runs anywhere (GitHub Pages, any static host)
-- **Vanilla JavaScript** - Zero dependencies, lightweight, fast
-- **Responsive Design** - Works on desktop, tablet, and mobile
-- **Bonus Features** - Search, filter, sort, export/import JSON, view toggle (cards/table)
+<ul>
+  <li><strong>Frontend Display Page</strong> (<code>index.html</code>) with search, filter, sort, and view toggle.</li>
+  <li><strong>Admin Panel</strong> (<code>admin.html</code>) with full CRUD operations.</li>
+  <li><strong>GitHub as Database</strong> using <code>data.json</code> and GitHub REST API.</li>
+  <li><strong>Secure Authentication</strong> via manual PAT entry (not hardcoded).</li>
+  <li><strong>No Backend Required</strong>, fully static and deployable on GitHub Pages.</li>
+  <li><strong>Responsive UI</strong> for desktop and mobile.</li>
+</ul>
 
-## File Structure
+<h2>File Structure</h2>
 
-```
-.
+<pre><code>.
 ├── index.html           # Frontend display page
 ├── admin.html           # Admin panel
 ├── style.css            # Styling for both pages
@@ -51,14 +57,13 @@ Optional: set hard defaults in `index.html`:
 ├── admin.js             # Admin panel logic
 ├── data.json            # Database file (stored in GitHub repo)
 └── assets/              # SVG logo and icon assets
-```
+</code></pre>
 
-## Data Structure
+<h2>Data Structure</h2>
 
-The `data.json` file uses this structure:
+<p>Expected <code>data.json</code> format:</p>
 
-```json
-{
+<pre><code>{
   "items": [
     {
       "id": "prod_001",
@@ -70,300 +75,185 @@ The `data.json` file uses this structure:
     }
   ]
 }
-```
-
-Each item requires:
-- `id` - Unique identifier
-- `name` - Product name
-- `price` - Product price (number)
-- `description` - (Optional) Product description
-- `image` - (Optional) Product image URL
-- `category` - (Optional) Product category
-
-## Setup Instructions
-
-### Step 1: Create a GitHub Repository
-
-1. Go to [github.com/new](https://github.com/new)
-2. Create a new repository (name it whatever you want, e.g., `my-cms`)
-3. Initialize with a README
-4. Clone it locally or prepare to upload files
-
-### Step 2: Add Project Files
-
-1. Copy all files from this project:
-   - `index.html`
-   - `admin.html`
-   - `data.json`
-   - `style.css`
-   - `github-api.js`
-   - `app.js`
-   - `admin.js`
-
-2. Commit and push to GitHub:
-   ```bash
-   git add .
-   git commit -m "Initial commit: add CMS app"
-   git push origin main
-   ```
-
-### Step 3: Create a Personal Access Token (PAT)
-
-1. Go to [github.com/settings/tokens](https://github.com/settings/tokens)
-2. Create either:
-   - **Fine-grained token** (recommended): grant your target repo + **Contents: Read and write**
-   - **Classic token**: `repo` (or `public_repo` for public-only use)
-3. Copy the token immediately (you won’t see it again)
-
-### Step 4: Deploy to GitHub Pages
-
-1. Go to your repository settings
-2. Scroll to **Pages** section
-3. Set **Source** to `main` branch (or your desired branch)
-4. Wait for deployment (usually 1-2 minutes)
-5. Your site will be available at: `https://username.github.io/repo-name`
-
-Or for organization sites:
-- `https://orgname.github.io/repo-name`
-
-### Step 5: Access the App
-
-- **Frontend**: `https://username.github.io/repo-name/index.html?owner=username&repo=repo-name&branch=main`
-- **Admin Panel**: `https://username.github.io/repo-name/admin.html`
-
-Or without parameters:
-- Sign in once in `admin.html`; frontend then reuses saved owner/repo/branch
-
-## How to Use
-
-### Frontend (index.html)
-
-1. Open `index.html` (or the GitHub Pages URL)
-2. Products are fetched automatically from `data.json` in your selected branch
-3. Features:
-   - **Search** - Find products by name, description, or category
-   - **Filter** - View products by category
-   - **Sort** - Sort by name or price (ascending/descending)
-   - **View Toggle** - Switch between card and table views
-   - **Admin Link** - Jump to admin panel
-
-### Admin Panel (admin.html)
-
-1. Open `admin.html`
-2. Enter GitHub credentials:
-   - **GitHub Username** - Your GitHub username
-   - **Repository Name** - Name of your repo with `data.json`
-   - **Branch** - Git branch (default: `main`)
-   - **Personal Access Token** - Your PAT from Step 3 (never saved to disk)
-3. Click **Sign In**
-4. Manage products:
-   - **Add Item** - Fill form and click "Add Item"
-   - **Edit Item** - Click "Edit" on any item, modify, and click "Update Item"
-   - **Delete Item** - Click "Delete" (confirmation required)
-   - **Search** - Filter items in the list
-5. **Export Data** - Download `data.json` as backup
-6. **Import Data** - Upload a `data.json` file to restore/bulk-load
-
-### GitHub API Operations
-
-The app handles these automatically:
-
-1. **Fetch File**:
-   ```
-   GET /repos/{owner}/{repo}/contents/data.json
-   ```
-   Returns file content (base64-encoded) and SHA hash
-
-2. **Update File**:
-   ```
-   PUT /repos/{owner}/{repo}/contents/data.json
-   ```
-   Body includes:
-   - `message` - Commit message
-   - `content` - Base64-encoded JSON
-   - `sha` - Current file SHA (prevents conflicts)
-   - `branch` - Target branch
-
-## Security Notes
-
-### Token Security
-
-⚠️ **IMPORTANT:**
-- Your PAT is **never hardcoded** in the source
-- Token is **not stored on disk** - only kept in browser memory/sessionStorage
-- Token is **never committed** to the repository
-- Each session requires re-entering the token
-- Consider using a **token with expiration** on GitHub
-- Frontend page never requires storing PAT for normal public-repo reads
-
-### Best Practices
-
-- Use a **fine-grained Personal Access Token** (GitHub's newer token type) if available
-- Limit token permissions to only the necessary repository
-- Regularly rotate your tokens
-- Never commit your token to version control
-- Use public repositories for read-only content if possible
-- Regenerate tokens if compromised
-
-## API Rate Limiting
-
-GitHub's REST API has rate limits:
-- **Unauthenticated**: 60 requests/hour
-- **Authenticated**: 5,000 requests/hour
-
-For personal use, you'll rarely hit these limits. The app makes:
-- 1 request to fetch current file (get SHA)
-- 1 request to update file
-- Plus repo validation on login
-
-## Troubleshooting
-
-### "Unauthorized: Invalid token"
-- Your PAT may have expired or been revoked
-- Check token has correct scopes (`repo` or `public_repo`)
-- Regenerate a new token at [github.com/settings/tokens](https://github.com/settings/tokens)
-
-### "Repository not found"
-- Check spelling of username and repo name
-- Ensure you have access to the repository
-- Public repos don't require authentication
-
-### "File not found"
-- `data.json` doesn't exist in the repository
-- Go to your repo and create/upload `data.json` manually
-- Make sure it's in the root directory
-
-### "Failed to decode base64"
-- Content in `data.json` is corrupted
-- Delete the file and create a fresh one with sample data
-- Or use the export/import feature to reset
-
-### Changes not showing on frontend
-- The frontend fetches from GitHub (not cached locally)
-- Hard refresh your browser (Ctrl+Shift+R or Cmd+Shift+R)
-- Wait a few seconds for GitHub Pages to rebuild
-- Check GitHub Actions to ensure deployment succeeded
-
-## Advanced Usage
-
-### Custom Domain
-
-To use a custom domain with GitHub Pages:
-
-1. In repository settings → Pages
-2. Add your custom domain
-3. Create a `CNAME` file in the repo with your domain
-4. Configure DNS at your domain registrar
-
-### Bulk Operations
-
-1. **Export all products** - Use "Export Data" button
-2. **Edit JSON locally** - Modify the exported file
-3. **Import back** - Use "Import Data" button
-
-### Multiple Repositories
-
-You can manage multiple data repositories:
-- Each instance needs different username/repo in admin panel
-- Or use multiple GitHub Pages sites
-
-### Environmental Configuration
-
-To use environment-specific data:
-1. Create multiple `data.json` files in different branches
-2. Change branch in admin panel before signing in
-3. Each branch maintains separate data
-
-## Limitations & Considerations
-
-⚠️ **Know These Limits:**
-- **No user accounts** - All changes appear as you (single-user)
-- **No concurrent editing** - Lock mechanisms not implemented
-- **File size** - JSON file has no hard limit, but practical limit ~5MB
-- **Real-time sync** - Changes don't auto-sync between tabs
-- **Offline access** - Requires internet connection (depends on GitHub)
-- **No database transactions** - Read/modify/write can conflict
-- **Simple validation** - Use GitHub's branch protection rules for extra safety
-
-## Extending the App
-
-### Add More Fields
-
-Modify both `data.json` and form fields in `admin.html`:
-
-```html
-<div class="form-group">
-  <label for="item-sku">SKU:</label>
-  <input type="text" id="item-sku" placeholder="SKU" />
-</div>
-```
-
-Then update `admin.js` to handle the new field.
-
-### Custom Styling
-
-Edit `style.css` to match your brand:
-```css
-:root {
-  --primary-color: #your-color;
-  --secondary-color: #your-color;
-  /* ... etc */
-}
-```
-
-### Add More Features
-
-The code is modular—add:
-- Categories/tags management
-- Inventory tracking
-- Pricing tiers
-- Reviews/ratings (stored in JSON)
-- Custom metadata fields
-
-## Browser Support
-
-- ✅ Chrome/Chromium (latest)
-- ✅ Firefox (latest)
-- ✅ Safari (latest)
-- ✅ Edge (latest)
-- ✅ Mobile browsers
-
-Requires:
-- ES6 JavaScript support
-- Fetch API
-- LocalStorage (optional)
-
-## License
-
-This project is open source and free to use. Modify as needed for your use case.
-
-## Support & Questions
-
-For issues:
-1. Check the **Troubleshooting** section
-2. Review the **GitHub API Integration** docs
-3. Check your PAT permissions and expiration
-4. Verify `data.json` exists and is valid JSON
-
-## File Size Reference
-
-- `github-api.js` ~4KB
-- `app.js` ~8KB
-- `admin.js` ~12KB
-- `style.css` ~14KB
-- **Total**: ~38KB (uncompressed, highly compressible)
-
-Perfect for fast GitHub Pages deployment!
-
----
-
-**Built with vanilla JavaScript — no frameworks, no build step, no dependencies.**
-
-Enjoy your personal CMS! 🚀
-#   c m s 
- 
- #   c m s 
- 
- #   c m s 
- 
- 
+</code></pre>
+
+<p>Required/optional fields:</p>
+<ul>
+  <li><code>id</code> (required): unique identifier</li>
+  <li><code>name</code> (required): product name</li>
+  <li><code>price</code> (required): numeric value</li>
+  <li><code>description</code> (optional)</li>
+  <li><code>image</code> (optional)</li>
+  <li><code>category</code> (optional)</li>
+</ul>
+
+<h2>Setup Instructions</h2>
+
+<h3>Step 1: Create a GitHub Repository</h3>
+<ol>
+  <li>Go to <a href="https://github.com/new">github.com/new</a>.</li>
+  <li>Create a new repository (for example: <code>my-cms</code>).</li>
+  <li>Initialize it with a README.</li>
+  <li>Clone locally or upload files directly.</li>
+</ol>
+
+<h3>Step 2: Add Project Files</h3>
+<ul>
+  <li><code>index.html</code></li>
+  <li><code>admin.html</code></li>
+  <li><code>data.json</code></li>
+  <li><code>style.css</code></li>
+  <li><code>github-api.js</code></li>
+  <li><code>app.js</code></li>
+  <li><code>admin.js</code></li>
+</ul>
+
+<pre><code>git add .
+git commit -m "Initial commit: add CMS app"
+git push origin main
+</code></pre>
+
+<h3>Step 3: Create a Personal Access Token (PAT)</h3>
+<ol>
+  <li>Go to <a href="https://github.com/settings/tokens">github.com/settings/tokens</a>.</li>
+  <li>Create either:
+    <ul>
+      <li><strong>Fine-grained token</strong> (recommended): target repo + <strong>Contents: Read and write</strong></li>
+      <li><strong>Classic token</strong>: <code>repo</code> (or <code>public_repo</code> for public-only use)</li>
+    </ul>
+  </li>
+  <li>Copy token immediately (GitHub only shows it once).</li>
+</ol>
+
+<h3>Step 4: Deploy to GitHub Pages</h3>
+<ol>
+  <li>Open repository settings.</li>
+  <li>Go to Pages section.</li>
+  <li>Set source branch (usually <code>main</code>).</li>
+  <li>Wait 1-2 minutes for deployment.</li>
+</ol>
+
+<p>URL example: <code>https://username.github.io/repo-name</code></p>
+
+<h3>Step 5: Access the App</h3>
+<ul>
+  <li>Frontend: <code>https://username.github.io/repo-name/index.html?owner=username&amp;repo=repo-name&amp;branch=main</code></li>
+  <li>Admin: <code>https://username.github.io/repo-name/admin.html</code></li>
+</ul>
+
+<p>Or sign in once in <code>admin.html</code>; frontend reuses saved owner/repo/branch.</p>
+
+<h2>How to Use</h2>
+
+<h3>Frontend</h3>
+<ol>
+  <li>Open <code>index.html</code> or your deployed frontend URL.</li>
+  <li>Data loads from GitHub <code>data.json</code> in selected branch.</li>
+  <li>Use search, category filter, sort, view toggle, and admin link.</li>
+</ol>
+
+<h3>Admin Panel</h3>
+<ol>
+  <li>Open <code>admin.html</code>.</li>
+  <li>Enter GitHub username, repo, branch, and PAT.</li>
+  <li>Click Sign In.</li>
+  <li>Add, edit, delete, search, export, and import items.</li>
+</ol>
+
+<h2>GitHub API Operations</h2>
+
+<p>Fetch file:</p>
+<pre><code>GET /repos/{owner}/{repo}/contents/data.json</code></pre>
+
+<p>Update file:</p>
+<pre><code>PUT /repos/{owner}/{repo}/contents/data.json</code></pre>
+
+<p>Update payload includes:</p>
+<ul>
+  <li><code>message</code></li>
+  <li><code>content</code> (base64 JSON)</li>
+  <li><code>sha</code> (for conflict safety)</li>
+  <li><code>branch</code></li>
+</ul>
+
+<h2>Security Notes</h2>
+
+<h3>Token Security</h3>
+<ul>
+  <li>PAT is never hardcoded.</li>
+  <li>PAT is not saved to disk.</li>
+  <li>PAT is never committed to repository.</li>
+  <li>Use token expiration and rotate regularly.</li>
+</ul>
+
+<h3>Best Practices</h3>
+<ul>
+  <li>Prefer fine-grained tokens with least privilege.</li>
+  <li>Limit token to required repository.</li>
+  <li>Regenerate tokens if compromised.</li>
+</ul>
+
+<h2>Troubleshooting</h2>
+
+<ul>
+  <li><strong>Unauthorized / Invalid token:</strong> regenerate token, verify scopes/permissions.</li>
+  <li><strong>Repository not found:</strong> verify owner/repo spelling and permissions.</li>
+  <li><strong>File not found:</strong> ensure <code>data.json</code> exists at repository root.</li>
+  <li><strong>Decode errors:</strong> repair invalid <code>data.json</code> content.</li>
+  <li><strong>Frontend not updating:</strong> hard refresh and wait for Pages rebuild.</li>
+</ul>
+
+<h2>Advanced Usage</h2>
+
+<h3>Custom Domain</h3>
+<ol>
+  <li>Set custom domain in GitHub Pages settings.</li>
+  <li>Add <code>CNAME</code> file.</li>
+  <li>Configure DNS at registrar.</li>
+</ol>
+
+<h3>Bulk Operations</h3>
+<ol>
+  <li>Export all data.</li>
+  <li>Edit JSON locally.</li>
+  <li>Import data back.</li>
+</ol>
+
+<h3>Multiple Repositories</h3>
+<p>Use different owner/repo values per deployment or admin login.</p>
+
+<h2>Limitations &amp; Considerations</h2>
+
+<ul>
+  <li>No multi-user account system.</li>
+  <li>No concurrent edit lock system.</li>
+  <li>Large JSON files may impact performance.</li>
+  <li>Internet is required for GitHub sync.</li>
+  <li>No transactional database guarantees.</li>
+</ul>
+
+<h2>Browser Support</h2>
+
+<ul>
+  <li>Chrome / Chromium (latest)</li>
+  <li>Firefox (latest)</li>
+  <li>Safari (latest)</li>
+  <li>Edge (latest)</li>
+  <li>Modern mobile browsers</li>
+</ul>
+
+<p>Requires ES6 support, Fetch API, and LocalStorage.</p>
+
+<h2>License</h2>
+<p>This project is open source and free to use.</p>
+
+<h2>Support</h2>
+<p>
+  For issues, check Troubleshooting first, verify PAT permissions/expiration,
+  and confirm <code>data.json</code> exists with valid JSON.
+</p>
+
+<hr />
+
+<p><strong>Built with vanilla JavaScript — no frameworks, no build step, no dependencies.</strong></p>
+<p>Enjoy your personal CMS! 🚀</p>
