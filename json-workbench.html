@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git-CMS | JSON Workbench</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand-row">
+        <img src="assets/logo.svg" alt="Git-CMS Logo" class="brand-logo" width="44" height="44">
+        <div>
+          <h1>JSON Workbench</h1>
+          <p class="header-subtitle">Validate, compare, and merge JSON datasets</p>
+        </div>
+      </div>
+      <nav class="subnav">
+        <div class="subnav-group">
+          <span class="subnav-label">Core</span>
+          <a href="index.html" class="btn btn-secondary btn-sm">Catalog</a>
+          <a href="admin.html" class="btn btn-secondary btn-sm">Admin</a>
+          <a href="gallery.html" class="btn btn-secondary btn-sm">Gallery</a>
+          <a href="reports.html" class="btn btn-secondary btn-sm">Reports</a>
+          <a href="planner.html" class="btn btn-secondary btn-sm">Planner</a>
+          <a href="about.html" class="btn btn-secondary btn-sm">About</a>
+        </div>
+        <details class="subnav-more" open>
+          <summary class="btn btn-secondary btn-sm">More Tools</summary>
+          <div class="subnav-group subnav-group-tools">
+            <a href="studio.html" class="btn btn-secondary btn-sm">Studio</a>
+            <a href="weather.html" class="btn btn-secondary btn-sm">Weather</a>
+            <a href="markets.html" class="btn btn-secondary btn-sm">Markets</a>
+            <a href="github-explorer.html" class="btn btn-secondary btn-sm">GitHub</a>
+            <a href="countries.html" class="btn btn-secondary btn-sm">Countries</a>
+            <a href="newsfeed.html" class="btn btn-secondary btn-sm">News</a>
+            <a href="planner-admin.html" class="btn btn-secondary btn-sm">Planner Admin</a>
+            <a href="json-workbench.html" class="btn btn-secondary btn-sm is-active" aria-current="page">JSON Workbench</a>
+          </div>
+        </details>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="workbench-message" class="message" style="display:none"></div>
+
+    <section class="section">
+      <h2 class="section-title">Inputs</h2>
+      <div class="api-toolbar">
+        <textarea id="json-a" rows="12" placeholder="JSON A (source)"></textarea>
+        <textarea id="json-b" rows="12" placeholder="JSON B (target)"></textarea>
+      </div>
+      <div class="button-group" style="margin-top:0.7rem;">
+        <button id="wb-load-catalog" class="btn btn-secondary" type="button">Load data.json into A</button>
+        <button id="wb-load-planner" class="btn btn-secondary" type="button">Load planner-data.json into B</button>
+        <button id="wb-format" class="btn btn-secondary" type="button">Format Both</button>
+        <button id="wb-validate" class="btn btn-primary" type="button">Validate + Compare</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Merge Engine</h2>
+      <div class="api-toolbar">
+        <input id="wb-array-path" type="text" value="items" placeholder="Array path (items/cards)">
+        <input id="wb-id-key" type="text" value="id" placeholder="Unique key (id)">
+      </div>
+      <div class="button-group" style="margin-top:0.7rem;">
+        <button id="wb-merge-a-priority" class="btn btn-success" type="button">Merge (A priority)</button>
+        <button id="wb-merge-b-priority" class="btn btn-success" type="button">Merge (B priority)</button>
+        <button id="wb-download" class="btn btn-secondary" type="button">Download Result</button>
+      </div>
+      <pre id="wb-report" class="studio-list" style="margin-top:0.7rem; white-space:pre-wrap;"></pre>
+      <textarea id="wb-output" rows="14" class="studio-textarea" placeholder="Merged output appears here"></textarea>
+    </section>
+  </div>
+
+  <script src="json-workbench.js"></script>
+</body>
+</html>

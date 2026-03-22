@@ -19,7 +19,9 @@
 <ul>
   <li><strong>gallery.html</strong>: Picsum masonry gallery with API caching, lightbox, filters, and load-more append behavior</li>
   <li><strong>reports.html</strong>: Visual analytics dashboard from <code>data.json</code> (stats, category chart, histogram, top products)</li>
-  <li><strong>planner.html</strong>: Local Kanban board for content/product workflow planning with drag/drop and persistence</li>
+  <li><strong>planner.html</strong>: JSON-first Kanban board that loads from <code>planner-data.json</code> with deterministic card IDs</li>
+  <li><strong>planner-admin.html</strong>: GitHub-backed editor for <code>planner-data.json</code> (same owner/repo/branch/token flow as catalog admin)</li>
+  <li><strong>json-workbench.html</strong>: Advanced JSON validate/compare/merge tool with configurable array path and unique key</li>
   <li><strong>studio.html</strong>: Mock catalog generator + JSON formatter/minifier/downloader for rapid testing</li>
   <li><strong>weather.html</strong>: Live weather + forecast search using Open-Meteo geocoding and forecast APIs</li>
   <li><strong>markets.html</strong>: Crypto market board (top coins, movement, volume) powered by CoinGecko API</li>
@@ -93,6 +95,10 @@
 ├── reports.js
 ├── planner.html
 ├── planner.js
+├── planner-admin.html
+├── planner-admin.js
+├── json-workbench.html
+├── json-workbench.js
 ├── studio.html
 ├── studio.js
 ├── weather.html
@@ -108,6 +114,7 @@
 ├── github-api.js
 ├── style.css
 ├── data.json
+├── planner-data.json
 ├── about.html
 ├── README.md
 └── assets/

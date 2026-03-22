@@ -35,6 +35,8 @@
             <a href="github-explorer.html" class="btn btn-secondary btn-sm">GitHub</a>
             <a href="countries.html" class="btn btn-secondary btn-sm">Countries</a>
             <a href="newsfeed.html" class="btn btn-secondary btn-sm">News</a>
+            <a href="planner-admin.html" class="btn btn-secondary btn-sm">Planner Admin</a>
+            <a href="json-workbench.html" class="btn btn-secondary btn-sm">JSON Workbench</a>
           </div>
         </details>
       </nav>
@@ -53,10 +55,11 @@
           <option value="done">Done</option>
         </select>
         <button id="planner-add" class="btn btn-success" type="button">Add Card</button>
-        <button id="planner-load-seed" class="btn btn-secondary" type="button">Load planner-data.json</button>
+        <button id="planner-reload-json" class="btn btn-secondary" type="button">Reload planner-data.json</button>
+        <button id="planner-download-json" class="btn btn-secondary" type="button">Download planner-data.json</button>
         <button id="planner-clear" class="btn btn-secondary" type="button">Clear Board</button>
       </div>
-      <p id="planner-meta" class="admin-summary">Planner data uses localStorage, seeded by planner-data.json.</p>
+      <p id="planner-meta" class="admin-summary">Planner loads directly from planner-data.json.</p>
     </section>
 
     <section class="section">

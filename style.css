@@ -496,6 +496,30 @@ textarea {
   width: 100%;
 }
 
+.extra-filters {
+  grid-column: 1 / -1;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #0f0f11;
+  padding: 0.5rem;
+}
+
+.extra-filters > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.extra-filters > summary::-webkit-details-marker {
+  display: none;
+}
+
+.extra-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.62rem;
+}
+
 .inline-toggle {
   display: inline-flex;
   align-items: center;
@@ -1262,6 +1286,10 @@ tr:hover {
   }
 
   .top-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .extra-filters-grid {
     grid-template-columns: 1fr;
   }
 

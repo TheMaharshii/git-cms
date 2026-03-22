@@ -4,13 +4,19 @@
  */
 
 class GitHubAPI {
-  constructor(owner, repo, branch = 'main', token = null) {
+  constructor(owner, repo, branch = 'main', token = null, filePath = 'data.json') {
     this.owner = owner;
     this.repo = repo;
     this.branch = branch;
     this.token = token;
     this.apiBase = 'https://api.github.com';
-    this.fileePath = 'data.json';
+    this.filePath = String(filePath || 'data.json').trim() || 'data.json';
+    this.fileePath = this.filePath;
+  }
+
+  setFilePath(filePath) {
+    this.filePath = String(filePath || 'data.json').trim() || 'data.json';
+    this.fileePath = this.filePath;
   }
 
   /**
@@ -66,7 +72,7 @@ class GitHubAPI {
    */
   async fetchData() {
     try {
-      const url = `${this.apiBase}/repos/${this.owner}/${this.repo}/contents/${this.fileePath}?ref=${this.branch}`;
+      const url = `${this.apiBase}/repos/${this.owner}/${this.repo}/contents/${this.filePath}?ref=${this.branch}`;
       
       const response = await fetch(url, {
         method: 'GET',
@@ -78,7 +84,7 @@ class GitHubAPI {
       }
 
       if (response.status === 404) {
-        throw new Error('File not found: data.json does not exist in the repository');
+        throw new Error(`File not found: ${this.filePath} does not exist in the repository`);
       }
 
       if (!response.ok) {
@@ -116,7 +122,7 @@ class GitHubAPI {
       // Encode to base64
       const encodedContent = this.encodeBase64(newContent);
 
-      const url = `${this.apiBase}/repos/${this.owner}/${this.repo}/contents/${this.fileePath}`;
+      const url = `${this.apiBase}/repos/${this.owner}/${this.repo}/contents/${this.filePath}`;
 
       const payload = {
         message: commitMessage,

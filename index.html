@@ -36,6 +36,8 @@
             <a href="github-explorer.html" class="btn btn-secondary btn-sm">GitHub</a>
             <a href="countries.html" class="btn btn-secondary btn-sm">Countries</a>
             <a href="newsfeed.html" class="btn btn-secondary btn-sm">News</a>
+            <a href="planner-admin.html" class="btn btn-secondary btn-sm">Planner Admin</a>
+            <a href="json-workbench.html" class="btn btn-secondary btn-sm">JSON Workbench</a>
           </div>
         </details>
       </nav>
@@ -73,26 +75,6 @@
             <option value="all">All Categories</option>
           </select>
 
-          <!-- Min Price -->
-          <input
-            type="number"
-            id="min-price"
-            placeholder="Min price"
-            min="0"
-            step="0.01"
-            aria-label="Minimum price"
-          >
-
-          <!-- Max Price -->
-          <input
-            type="number"
-            id="max-price"
-            placeholder="Max price"
-            min="0"
-            step="0.01"
-            aria-label="Maximum price"
-          >
-
           <!-- Sort -->
           <select id="sort-select" aria-label="Sort by">
             <option value="name-asc">Name (A-Z)</option>
@@ -102,49 +84,75 @@
             <option value="random">Random</option>
           </select>
 
-          <!-- Page Size -->
-          <select id="page-size" aria-label="Items per page">
-            <option value="6">6 / page</option>
-            <option value="12" selected>12 / page</option>
-            <option value="18">18 / page</option>
-            <option value="24">24 / page</option>
-          </select>
-
-          <!-- View Toggle -->
-          <select id="view-toggle" aria-label="View type">
-            <option value="cards">Cards View</option>
-            <option value="table">Table View</option>
-          </select>
-
-          <label class="inline-toggle" for="favorites-only">
-            <input type="checkbox" id="favorites-only">
-            Favorites only
-          </label>
-
-          <label class="inline-toggle" for="only-images">
-            <input type="checkbox" id="only-images">
-            With images
-          </label>
-
-          <select id="auto-refresh" aria-label="Auto refresh interval">
-            <option value="0">Auto refresh: Off</option>
-            <option value="30">Auto refresh: 30s</option>
-            <option value="60">Auto refresh: 60s</option>
-            <option value="120">Auto refresh: 120s</option>
-          </select>
-
-          <select id="view-presets" aria-label="Saved views">
-            <option value="">Saved views</option>
-          </select>
-
-          <button id="save-view-btn" class="btn btn-secondary" type="button">Save View</button>
-          <button id="delete-view-btn" class="btn btn-secondary" type="button">Delete View</button>
-
           <button id="clear-filters" class="btn btn-secondary" type="button">Clear</button>
-          <button id="shuffle-btn" class="btn btn-secondary" type="button">Shuffle</button>
-          <button id="random-pick-btn" class="btn btn-secondary" type="button">Random Pick</button>
-          <button id="share-view-btn" class="btn btn-secondary" type="button">Share View</button>
-          <button id="export-visible-btn" class="btn btn-secondary" type="button">Export Visible</button>
+
+          <details class="extra-filters">
+            <summary class="btn btn-secondary" aria-label="Toggle extra filters">Extra Filters</summary>
+            <div class="extra-filters-grid">
+              <!-- Min Price -->
+              <input
+                type="number"
+                id="min-price"
+                placeholder="Min price"
+                min="0"
+                step="0.01"
+                aria-label="Minimum price"
+              >
+
+              <!-- Max Price -->
+              <input
+                type="number"
+                id="max-price"
+                placeholder="Max price"
+                min="0"
+                step="0.01"
+                aria-label="Maximum price"
+              >
+
+              <!-- Page Size -->
+              <select id="page-size" aria-label="Items per page">
+                <option value="6">6 / page</option>
+                <option value="12" selected>12 / page</option>
+                <option value="18">18 / page</option>
+                <option value="24">24 / page</option>
+              </select>
+
+              <!-- View Toggle -->
+              <select id="view-toggle" aria-label="View type">
+                <option value="cards">Cards View</option>
+                <option value="table">Table View</option>
+              </select>
+
+              <label class="inline-toggle" for="favorites-only">
+                <input type="checkbox" id="favorites-only">
+                Favorites only
+              </label>
+
+              <label class="inline-toggle" for="only-images">
+                <input type="checkbox" id="only-images">
+                With images
+              </label>
+
+              <select id="auto-refresh" aria-label="Auto refresh interval">
+                <option value="0">Auto refresh: Off</option>
+                <option value="30">Auto refresh: 30s</option>
+                <option value="60">Auto refresh: 60s</option>
+                <option value="120">Auto refresh: 120s</option>
+              </select>
+
+              <select id="view-presets" aria-label="Saved views">
+                <option value="">Saved views</option>
+              </select>
+
+              <button id="save-view-btn" class="btn btn-secondary" type="button">Save View</button>
+              <button id="delete-view-btn" class="btn btn-secondary" type="button">Delete View</button>
+
+              <button id="shuffle-btn" class="btn btn-secondary" type="button">Shuffle</button>
+              <button id="random-pick-btn" class="btn btn-secondary" type="button">Random Pick</button>
+              <button id="share-view-btn" class="btn btn-secondary" type="button">Share View</button>
+              <button id="export-visible-btn" class="btn btn-secondary" type="button">Export Visible</button>
+            </div>
+          </details>
 
           <!-- Admin Link -->
           <a href="admin.html" class="btn btn-secondary">

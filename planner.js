@@ -1,78 +1,85 @@
-const PLANNER_KEY = 'gitcms_planner_v1';
 const PLANNER_DATA_URL = 'planner-data.json';
 
 const plannerState = {
   cards: [],
 };
 
-function savePlanner() {
-  localStorage.setItem(PLANNER_KEY, JSON.stringify(plannerState.cards));
-}
-
-function loadPlanner() {
-  try {
-    const cards = JSON.parse(localStorage.getItem(PLANNER_KEY) || '[]');
-    plannerState.cards = Array.isArray(cards) ? cards : [];
-  } catch {
-    plannerState.cards = [];
-  }
-}
-
-async function loadPlannerSeedFromJson() {
-  if (plannerState.cards.length > 0) return false;
-
-  try {
-    const response = await fetch(PLANNER_DATA_URL, { cache: 'no-store' });
-    if (!response.ok) return false;
-
-    const data = await response.json();
-    if (!data || !Array.isArray(data.cards)) return false;
-
-    plannerState.cards = data.cards
-      .map((card, index) => ({
-        id: String(card.id || `seed_${index + 1}`),
-        title: String(card.title || '').trim(),
-        tags: String(card.tags || '').trim(),
-        column: ['todo', 'inprogress', 'review', 'done'].includes(card.column) ? card.column : 'todo',
-      }))
-      .filter((card) => card.title);
-
-    savePlanner();
-    return true;
-  } catch {
-    // Ignore seed load errors and continue with empty board.
-    return false;
-  }
-}
-
-async function replaceWithSeedData() {
-  const meta = document.getElementById('planner-meta');
-
+async function loadPlannerFromJson() {
   try {
     const response = await fetch(PLANNER_DATA_URL, { cache: 'no-store' });
     if (!response.ok) {
-      throw new Error(`Unable to load ${PLANNER_DATA_URL}`);
+      throw new Error(`Unable to load ${PLANNER_DATA_URL} (${response.status})`);
     }
 
     const data = await response.json();
     if (!data || !Array.isArray(data.cards)) {
-      throw new Error('Invalid planner-data.json format');
+      throw new Error(`Invalid ${PLANNER_DATA_URL} format: expected { "cards": [] }`);
     }
 
-    plannerState.cards = data.cards
-      .map((card, index) => ({
-        id: String(card.id || `seed_${index + 1}`),
-        title: String(card.title || '').trim(),
-        tags: String(card.tags || '').trim(),
-        column: ['todo', 'inprogress', 'review', 'done'].includes(card.column) ? card.column : 'todo',
-      }))
-      .filter((card) => card.title);
+    plannerState.cards = normalizeCards(data.cards);
+    return plannerState.cards.length;
+  } catch (error) {
+    throw new Error(String(error.message || `Unable to load ${PLANNER_DATA_URL}`));
+  }
+}
 
-    savePlanner();
+function normalizeCards(cards) {
+  return cards
+    .map((card, index) => ({
+      id: String(card.id || `card_${String(index + 1).padStart(3, '0')}`),
+      title: String(card.title || '').trim(),
+      tags: String(card.tags || '').trim(),
+      column: ['todo', 'inprogress', 'review', 'done'].includes(card.column) ? card.column : 'todo',
+    }))
+    .filter((card) => card.title);
+}
+
+function nextCardId() {
+  const used = new Set(plannerState.cards.map((card) => String(card.id || '').trim()));
+  let pointer = plannerState.cards.length + 1;
+  while (used.has(`card_${String(pointer).padStart(3, '0')}`)) {
+    pointer += 1;
+  }
+  return `card_${String(pointer).padStart(3, '0')}`;
+}
+
+async function reloadPlannerFromJson() {
+  const meta = document.getElementById('planner-meta');
+
+  try {
+    const count = await loadPlannerFromJson();
     renderPlanner();
-    if (meta) meta.textContent = `Loaded ${plannerState.cards.length} cards from ${PLANNER_DATA_URL}.`;
+    if (meta) meta.textContent = `Loaded ${count} cards from ${PLANNER_DATA_URL}.`;
   } catch (error) {
     if (meta) meta.textContent = String(error.message || 'Unable to load planner-data.json');
+  }
+}
+
+function downloadPlannerJson() {
+  const meta = document.getElementById('planner-meta');
+  const payload = {
+    cards: plannerState.cards.map((card) => ({
+      id: card.id,
+      title: card.title,
+      tags: card.tags,
+      column: card.column,
+    })),
+  };
+
+  const content = JSON.stringify(payload, null, 2);
+  const blob = new Blob([content], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = PLANNER_DATA_URL;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+
+  if (meta) {
+    meta.textContent = `Downloaded ${PLANNER_DATA_URL}. Replace project file to persist changes.`;
   }
 }
 
@@ -117,7 +124,7 @@ function addCard() {
   if (!title) return;
 
   plannerState.cards.push({
-    id: `task_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+    id: nextCardId(),
     title,
     tags: tagsInput.value.trim(),
     column: colInput.value,
@@ -125,14 +132,12 @@ function addCard() {
 
   titleInput.value = '';
   tagsInput.value = '';
-  savePlanner();
   renderPlanner();
 }
 
 function clearBoard() {
   if (!confirm('Clear all planner cards?')) return;
   plannerState.cards = [];
-  savePlanner();
   renderPlanner();
 }
 
@@ -148,7 +153,8 @@ function shiftColumn(current, direction) {
 function bindPlannerEvents() {
   document.getElementById('planner-add')?.addEventListener('click', addCard);
   document.getElementById('planner-clear')?.addEventListener('click', clearBoard);
-  document.getElementById('planner-load-seed')?.addEventListener('click', replaceWithSeedData);
+  document.getElementById('planner-reload-json')?.addEventListener('click', reloadPlannerFromJson);
+  document.getElementById('planner-download-json')?.addEventListener('click', downloadPlannerJson);
 
   document.getElementById('kanban-grid')?.addEventListener('click', (event) => {
     const target = event.target;
@@ -169,7 +175,6 @@ function bindPlannerEvents() {
       plannerState.cards[index].column = shiftColumn(plannerState.cards[index].column, action);
     }
 
-    savePlanner();
     renderPlanner();
   });
 
@@ -196,7 +201,6 @@ function bindPlannerEvents() {
       if (!card) return;
       card.column = toColumn;
       draggingId = '';
-      savePlanner();
       renderPlanner();
     });
   });
@@ -204,18 +208,18 @@ function bindPlannerEvents() {
 
 async function initPlanner() {
   const meta = document.getElementById('planner-meta');
-  loadPlanner();
-  const seeded = await loadPlannerSeedFromJson();
-  renderPlanner();
-  bindPlannerEvents();
-
-  if (meta) {
-    if (plannerState.cards.length === 0) {
-      meta.textContent = 'Planner board is empty. Add cards or load planner-data.json.';
-    } else if (seeded) {
-      meta.textContent = `Loaded ${plannerState.cards.length} seeded cards from ${PLANNER_DATA_URL}.`;
-    } else {
-      meta.textContent = `Loaded ${plannerState.cards.length} local cards from browser storage.`;
+  try {
+    const count = await loadPlannerFromJson();
+    renderPlanner();
+    bindPlannerEvents();
+    if (meta) {
+      meta.textContent = `Loaded ${count} cards from ${PLANNER_DATA_URL}. Changes stay in this tab until you download JSON.`;
+    }
+  } catch (error) {
+    renderPlanner();
+    bindPlannerEvents();
+    if (meta) {
+      meta.textContent = String(error.message || 'Unable to load planner-data.json');
     }
   }
 }
