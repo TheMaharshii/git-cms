@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Git-CMS | Content Planner</title>
+  <title>Git-CMS | Tech News Feed</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,8 +12,8 @@
       <div class="brand-row">
         <img src="assets/logo.svg" alt="Git-CMS Logo" class="brand-logo" width="44" height="44">
         <div>
-          <h1>Content Planner</h1>
-          <p class="header-subtitle">Kanban board for catalog ideas and publishing workflow</p>
+          <h1>Tech News Feed</h1>
+          <p class="header-subtitle">Hacker News search feed via Algolia API</p>
         </div>
       </div>
       <nav class="subnav">
@@ -34,43 +34,25 @@
   </header>
 
   <div class="container">
+    <div id="news-error" class="message message-error" style="display:none"></div>
+
     <section class="section">
-      <div class="planner-controls">
-        <input id="planner-title" type="text" placeholder="Task title (e.g., Add Winter collection)">
-        <input id="planner-tags" type="text" placeholder="Tags (comma separated)">
-        <select id="planner-column">
-          <option value="todo">Todo</option>
-          <option value="inprogress">In Progress</option>
-          <option value="review">Review</option>
-          <option value="done">Done</option>
-        </select>
-        <button id="planner-add" class="btn btn-success" type="button">Add Card</button>
-        <button id="planner-clear" class="btn btn-secondary" type="button">Clear Board</button>
+      <div class="api-toolbar">
+        <input id="news-query" type="text" placeholder="Search tech topics (e.g. ai, rust, react)">
+        <button id="news-search" class="btn btn-primary" type="button">Search</button>
       </div>
+      <div id="news-meta" class="admin-summary">Ready</div>
     </section>
 
     <section class="section">
-      <div class="kanban-grid" id="kanban-grid">
-        <div class="kanban-col" data-col="todo">
-          <h3>Todo</h3>
-          <div class="kanban-list" data-list="todo"></div>
-        </div>
-        <div class="kanban-col" data-col="inprogress">
-          <h3>In Progress</h3>
-          <div class="kanban-list" data-list="inprogress"></div>
-        </div>
-        <div class="kanban-col" data-col="review">
-          <h3>Review</h3>
-          <div class="kanban-list" data-list="review"></div>
-        </div>
-        <div class="kanban-col" data-col="done">
-          <h3>Done</h3>
-          <div class="kanban-list" data-list="done"></div>
-        </div>
-      </div>
+      <div id="news-list" class="api-grid"></div>
+    </section>
+
+    <section class="section text-center">
+      <button id="news-load-more" class="btn btn-secondary" type="button">Load More</button>
     </section>
   </div>
 
-  <script src="planner.js"></script>
+  <script src="newsfeed.js"></script>
 </body>
 </html>

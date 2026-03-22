@@ -6,7 +6,7 @@ const galleryState = {
   limit: 15,
   allItems: [],
   visibleItems: [],
-  columns: 3,
+  columns: 4,
   query: '',
 };
 
@@ -59,14 +59,23 @@ async function fetchPicsumPage(page, limit, forceRefresh = false) {
 }
 
 function buildPhotoCard(photo) {
+  const thumb = buildThumbDimensions(photo);
+
   const card = document.createElement('article');
   card.className = 'gallery-card';
   card.setAttribute('data-author', (photo.author || '').toLowerCase());
+  card.setAttribute('data-photo-id', String(photo.id || ''));
+  card.setAttribute('data-photo-author', String(photo.author || 'Unknown'));
+  card.setAttribute('data-photo-width', String(photo.width || ''));
+  card.setAttribute('data-photo-height', String(photo.height || ''));
+  card.setAttribute('data-photo-url', String(photo.url || ''));
+  card.setAttribute('data-photo-download-url', String(photo.download_url || ''));
+
   card.innerHTML = `
-    <img src="https://picsum.photos/id/${photo.id}/800/1200" loading="lazy" alt="${escapeHtml(photo.author || 'Unknown author')}" data-full="${escapeHtml(photo.download_url || '')}">
+    <img src="https://picsum.photos/id/${photo.id}/${thumb.width}/${thumb.height}" loading="lazy" alt="${escapeHtml(photo.author || 'Unknown author')}" data-full="${escapeHtml(photo.download_url || '')}">
     <div class="gallery-card-content">
       <h3>${escapeHtml(photo.author || 'Unknown')}</h3>
-      <p>ID: ${escapeHtml(photo.id)}</p>
+      <p>ID: ${escapeHtml(photo.id)} · ${thumb.width}×${thumb.height}</p>
       <div class="gallery-card-actions">
         <a class="btn btn-secondary btn-sm" href="${escapeHtml(photo.download_url || '#')}" target="_blank" rel="noopener noreferrer">Open Original</a>
         <button class="btn btn-secondary btn-sm" type="button" data-copy-url="${escapeHtml(photo.download_url || '')}">Copy URL</button>
@@ -74,6 +83,21 @@ function buildPhotoCard(photo) {
     </div>
   `;
   return card;
+}
+
+function buildThumbDimensions(photo) {
+  const originalWidth = Number(photo.width) || 1200;
+  const originalHeight = Number(photo.height) || 900;
+  const aspectRatio = originalWidth / originalHeight;
+
+  const baseWidth = 520;
+  const deterministicJitter = (Number(photo.id || 1) % 7) - 3;
+  const width = Math.max(380, baseWidth + (deterministicJitter * 24));
+  const ratioHeight = Math.round(width / Math.max(0.35, Math.min(2.4, aspectRatio)));
+  const randomLift = 40 + ((Number(photo.id || 1) % 5) * 26);
+  const height = Math.max(280, Math.min(980, ratioHeight + randomLift));
+
+  return { width, height };
 }
 
 function escapeHtml(text) {
@@ -139,7 +163,7 @@ function applyFilter() {
   cards.forEach((card) => {
     const author = card.getAttribute('data-author') || '';
     const visible = !galleryState.query || author.includes(galleryState.query);
-    card.style.display = visible ? 'inline-block' : 'none';
+    card.style.display = visible ? '' : 'none';
   });
 
   updateMeta();
@@ -204,8 +228,11 @@ function bindLightbox() {
   const lightbox = document.getElementById('gallery-lightbox');
   const lightboxImage = document.getElementById('gallery-lightbox-image');
   const lightboxCaption = document.getElementById('gallery-lightbox-caption');
+  const lightboxDetails = document.getElementById('gallery-lightbox-details');
 
-  if (!masonry || !lightbox || !lightboxImage || !lightboxCaption) return;
+  if (!masonry || !lightbox || !lightboxImage || !lightboxCaption || !lightboxDetails) return;
+
+  lightbox.hidden = true;
 
   masonry.addEventListener('click', (event) => {
     const target = event.target;
@@ -219,8 +246,29 @@ function bindLightbox() {
 
     if (target.tagName === 'IMG') {
       const image = target;
+      const card = image.closest('.gallery-card');
       lightboxImage.src = image.getAttribute('data-full') || image.getAttribute('src') || '';
       lightboxCaption.textContent = image.getAttribute('alt') || 'Photo';
+
+      if (card instanceof HTMLElement) {
+        const id = card.getAttribute('data-photo-id') || '-';
+        const author = card.getAttribute('data-photo-author') || '-';
+        const width = card.getAttribute('data-photo-width') || '-';
+        const height = card.getAttribute('data-photo-height') || '-';
+        const pageUrl = card.getAttribute('data-photo-url') || '';
+        const downloadUrl = card.getAttribute('data-photo-download-url') || '';
+
+        lightboxDetails.innerHTML = `
+          <p><strong>ID:</strong> ${escapeHtml(id)}</p>
+          <p><strong>Author:</strong> ${escapeHtml(author)}</p>
+          <p><strong>Original Size:</strong> ${escapeHtml(width)} × ${escapeHtml(height)}</p>
+          <p><strong>Source:</strong> <a href="${escapeHtml(pageUrl)}" target="_blank" rel="noopener noreferrer">View Source</a></p>
+          <p><strong>Download URL:</strong> <a href="${escapeHtml(downloadUrl)}" target="_blank" rel="noopener noreferrer">Open Image</a></p>
+        `;
+      } else {
+        lightboxDetails.innerHTML = '';
+      }
+
       lightbox.hidden = false;
     }
   });
@@ -228,12 +276,14 @@ function bindLightbox() {
   document.getElementById('gallery-lightbox-close')?.addEventListener('click', () => {
     lightbox.hidden = true;
     lightboxImage.removeAttribute('src');
+    lightboxDetails.innerHTML = '';
   });
 
   lightbox.addEventListener('click', (event) => {
     if (event.target === lightbox) {
       lightbox.hidden = true;
       lightboxImage.removeAttribute('src');
+      lightboxDetails.innerHTML = '';
     }
   });
 }
@@ -244,11 +294,6 @@ function initGallery() {
   document.getElementById('gallery-search')?.addEventListener('input', (event) => {
     galleryState.query = String(event.target.value || '').trim().toLowerCase();
     applyFilter();
-  });
-
-  document.getElementById('gallery-columns')?.addEventListener('change', (event) => {
-    const nextColumns = Number(event.target.value) || 3;
-    setColumns(nextColumns);
   });
 
   document.getElementById('refresh-gallery')?.addEventListener('click', () => {

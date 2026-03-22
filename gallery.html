@@ -22,6 +22,12 @@
         <a href="reports.html" class="btn btn-secondary btn-sm">Reports</a>
         <a href="planner.html" class="btn btn-secondary btn-sm">Planner</a>
         <a href="studio.html" class="btn btn-secondary btn-sm">Studio</a>
+        <a href="weather.html" class="btn btn-secondary btn-sm">Weather</a>
+        <a href="markets.html" class="btn btn-secondary btn-sm">Markets</a>
+        <a href="github-explorer.html" class="btn btn-secondary btn-sm">GitHub</a>
+        <a href="countries.html" class="btn btn-secondary btn-sm">Countries</a>
+        <a href="newsfeed.html" class="btn btn-secondary btn-sm">News</a>
+        <a href="about.html" class="btn btn-secondary btn-sm">About</a>
       </nav>
     </div>
   </header>
@@ -32,12 +38,7 @@
     <section class="section">
       <div class="gallery-controls">
         <input id="gallery-search" type="text" placeholder="Filter by author..." aria-label="Filter by author">
-        <select id="gallery-columns" aria-label="Masonry column count">
-          <option value="2">2 Columns</option>
-          <option value="3" selected>3 Columns</option>
-          <option value="4">4 Columns</option>
-          <option value="5">5 Columns</option>
-        </select>
+        <div class="gallery-fixed-columns">Layout: 4 columns</div>
         <button id="refresh-gallery" class="btn btn-secondary" type="button">Refresh API</button>
         <button id="clear-gallery-cache" class="btn btn-secondary" type="button">Clear Cache</button>
       </div>
@@ -57,6 +58,7 @@
     <button id="gallery-lightbox-close" class="btn btn-secondary btn-sm" type="button">Close</button>
     <img id="gallery-lightbox-image" alt="Selected photo">
     <p id="gallery-lightbox-caption"></p>
+    <div class="gallery-lightbox-details" id="gallery-lightbox-details"></div>
   </div>
 
   <script src="gallery.js"></script>
