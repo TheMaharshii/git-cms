@@ -3,7 +3,7 @@ const GALLERY_CACHE_TTL_MS = 30 * 60 * 1000;
 
 const galleryState = {
   page: 2,
-  limit: 40,
+  limit: 15,
   allItems: [],
   visibleItems: [],
   columns: 3,
@@ -86,11 +86,49 @@ function appendPhotos(items) {
   const masonry = document.getElementById('gallery-masonry');
   if (!masonry) return;
 
-  const fragment = document.createDocumentFragment();
   items.forEach((photo) => {
-    fragment.appendChild(buildPhotoCard(photo));
+    const card = buildPhotoCard(photo);
+    appendCardToShortestColumn(card);
   });
-  masonry.appendChild(fragment);
+}
+
+function getMasonryColumns() {
+  const masonry = document.getElementById('gallery-masonry');
+  if (!masonry) return [];
+  return Array.from(masonry.querySelectorAll('.gallery-col'));
+}
+
+function createMasonryColumns(count) {
+  const masonry = document.getElementById('gallery-masonry');
+  if (!masonry) return;
+
+  const currentCards = Array.from(masonry.querySelectorAll('.gallery-card'));
+  masonry.innerHTML = '';
+
+  for (let i = 0; i < count; i += 1) {
+    const col = document.createElement('div');
+    col.className = 'gallery-col';
+    col.setAttribute('data-col-index', String(i));
+    masonry.appendChild(col);
+  }
+
+  currentCards.forEach((card) => {
+    appendCardToShortestColumn(card);
+  });
+}
+
+function appendCardToShortestColumn(card) {
+  const columns = getMasonryColumns();
+  if (!columns.length) return;
+
+  let target = columns[0];
+  columns.forEach((column) => {
+    if (column.offsetHeight < target.offsetHeight) {
+      target = column;
+    }
+  });
+
+  target.appendChild(card);
 }
 
 function applyFilter() {
@@ -146,9 +184,11 @@ async function loadMore(forceRefresh = false) {
 
 function setColumns(count) {
   const masonry = document.getElementById('gallery-masonry');
-  if (!masonry) return;
   galleryState.columns = count;
-  masonry.style.columnCount = String(count);
+  if (masonry) {
+    masonry.style.gridTemplateColumns = `repeat(${galleryState.columns}, minmax(0, 1fr))`;
+  }
+  createMasonryColumns(galleryState.columns);
   updateMeta();
 }
 

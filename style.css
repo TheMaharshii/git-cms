@@ -902,19 +902,24 @@ tr:hover {
 }
 
 .gallery-masonry {
-  column-gap: 0.78rem;
-  column-count: 3;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.78rem;
+  align-items: start;
+}
+
+.gallery-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 .gallery-card {
-  break-inside: avoid;
-  margin-bottom: 0.8rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--surface);
   box-shadow: var(--shadow-sm);
-  display: inline-block;
   width: 100%;
 }
 
@@ -957,6 +962,10 @@ tr:hover {
   justify-content: center;
   gap: 0.8rem;
   padding: 1rem;
+}
+
+.gallery-lightbox[hidden] {
+  display: none !important;
 }
 
 .gallery-lightbox img {
@@ -1094,7 +1103,7 @@ tr:hover {
   }
 
   .gallery-masonry {
-    column-count: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .subnav {
