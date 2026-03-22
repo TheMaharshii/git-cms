@@ -10,6 +10,10 @@ const galleryState = {
   query: '',
 };
 
+function getResponsiveColumnCount() {
+  return window.matchMedia('(max-width: 768px)').matches ? 2 : 4;
+}
+
 function showGalleryError(message) {
   const el = document.getElementById('gallery-error');
   if (!el) return;
@@ -70,9 +74,13 @@ function buildPhotoCard(photo) {
   card.setAttribute('data-photo-height', String(photo.height || ''));
   card.setAttribute('data-photo-url', String(photo.url || ''));
   card.setAttribute('data-photo-download-url', String(photo.download_url || ''));
+  card.setAttribute('data-thumb-width', String(thumb.width));
+  card.setAttribute('data-thumb-height', String(thumb.height));
 
   card.innerHTML = `
-    <img src="https://picsum.photos/id/${photo.id}/${thumb.width}/${thumb.height}" loading="lazy" alt="${escapeHtml(photo.author || 'Unknown author')}" data-full="${escapeHtml(photo.download_url || '')}">
+    <div class="gallery-image-shell" style="aspect-ratio: ${thumb.width} / ${thumb.height};">
+      <img src="https://picsum.photos/id/${photo.id}/${thumb.width}/${thumb.height}" width="${thumb.width}" height="${thumb.height}" loading="lazy" alt="${escapeHtml(photo.author || 'Unknown author')}" data-full="${escapeHtml(photo.download_url || '')}">
+    </div>
     <div class="gallery-card-content">
       <h3>${escapeHtml(photo.author || 'Unknown')}</h3>
       <p>ID: ${escapeHtml(photo.id)} · ${thumb.width}×${thumb.height}</p>
@@ -113,6 +121,16 @@ function appendPhotos(items) {
   items.forEach((photo) => {
     const card = buildPhotoCard(photo);
     appendCardToShortestColumn(card);
+  });
+
+  requestAnimationFrame(() => {
+    const newCards = masonry.querySelectorAll('.gallery-card img');
+    newCards.forEach((img) => {
+      if (img.complete) return;
+      img.addEventListener('load', () => {
+        updateMeta();
+      }, { once: true });
+    });
   });
 }
 
@@ -207,11 +225,7 @@ async function loadMore(forceRefresh = false) {
 }
 
 function setColumns(count) {
-  const masonry = document.getElementById('gallery-masonry');
   galleryState.columns = count;
-  if (masonry) {
-    masonry.style.gridTemplateColumns = `repeat(${galleryState.columns}, minmax(0, 1fr))`;
-  }
   createMasonryColumns(galleryState.columns);
   updateMeta();
 }
@@ -306,7 +320,15 @@ function initGallery() {
   });
 
   bindLightbox();
-  setColumns(galleryState.columns);
+  setColumns(getResponsiveColumnCount());
+
+  window.addEventListener('resize', () => {
+    const next = getResponsiveColumnCount();
+    if (next !== galleryState.columns) {
+      setColumns(next);
+    }
+  });
+
   loadMore(false);
 }
 

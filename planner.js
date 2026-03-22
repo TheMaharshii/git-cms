@@ -1,4 +1,5 @@
 const PLANNER_KEY = 'gitcms_planner_v1';
+const PLANNER_DATA_URL = 'planner-data.json';
 
 const plannerState = {
   cards: [],
@@ -14,6 +15,64 @@ function loadPlanner() {
     plannerState.cards = Array.isArray(cards) ? cards : [];
   } catch {
     plannerState.cards = [];
+  }
+}
+
+async function loadPlannerSeedFromJson() {
+  if (plannerState.cards.length > 0) return false;
+
+  try {
+    const response = await fetch(PLANNER_DATA_URL, { cache: 'no-store' });
+    if (!response.ok) return false;
+
+    const data = await response.json();
+    if (!data || !Array.isArray(data.cards)) return false;
+
+    plannerState.cards = data.cards
+      .map((card, index) => ({
+        id: String(card.id || `seed_${index + 1}`),
+        title: String(card.title || '').trim(),
+        tags: String(card.tags || '').trim(),
+        column: ['todo', 'inprogress', 'review', 'done'].includes(card.column) ? card.column : 'todo',
+      }))
+      .filter((card) => card.title);
+
+    savePlanner();
+    return true;
+  } catch {
+    // Ignore seed load errors and continue with empty board.
+    return false;
+  }
+}
+
+async function replaceWithSeedData() {
+  const meta = document.getElementById('planner-meta');
+
+  try {
+    const response = await fetch(PLANNER_DATA_URL, { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Unable to load ${PLANNER_DATA_URL}`);
+    }
+
+    const data = await response.json();
+    if (!data || !Array.isArray(data.cards)) {
+      throw new Error('Invalid planner-data.json format');
+    }
+
+    plannerState.cards = data.cards
+      .map((card, index) => ({
+        id: String(card.id || `seed_${index + 1}`),
+        title: String(card.title || '').trim(),
+        tags: String(card.tags || '').trim(),
+        column: ['todo', 'inprogress', 'review', 'done'].includes(card.column) ? card.column : 'todo',
+      }))
+      .filter((card) => card.title);
+
+    savePlanner();
+    renderPlanner();
+    if (meta) meta.textContent = `Loaded ${plannerState.cards.length} cards from ${PLANNER_DATA_URL}.`;
+  } catch (error) {
+    if (meta) meta.textContent = String(error.message || 'Unable to load planner-data.json');
   }
 }
 
@@ -89,6 +148,7 @@ function shiftColumn(current, direction) {
 function bindPlannerEvents() {
   document.getElementById('planner-add')?.addEventListener('click', addCard);
   document.getElementById('planner-clear')?.addEventListener('click', clearBoard);
+  document.getElementById('planner-load-seed')?.addEventListener('click', replaceWithSeedData);
 
   document.getElementById('kanban-grid')?.addEventListener('click', (event) => {
     const target = event.target;
@@ -142,10 +202,22 @@ function bindPlannerEvents() {
   });
 }
 
-function initPlanner() {
+async function initPlanner() {
+  const meta = document.getElementById('planner-meta');
   loadPlanner();
+  const seeded = await loadPlannerSeedFromJson();
   renderPlanner();
   bindPlannerEvents();
+
+  if (meta) {
+    if (plannerState.cards.length === 0) {
+      meta.textContent = 'Planner board is empty. Add cards or load planner-data.json.';
+    } else if (seeded) {
+      meta.textContent = `Loaded ${plannerState.cards.length} seeded cards from ${PLANNER_DATA_URL}.`;
+    } else {
+      meta.textContent = `Loaded ${plannerState.cards.length} local cards from browser storage.`;
+    }
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initPlanner);
