@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git-CMS | Picsum Gallery</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand-row">
+        <img src="assets/logo.svg" alt="Git-CMS Logo" class="brand-logo" width="44" height="44">
+        <div>
+          <h1>Picsum Gallery</h1>
+          <p class="header-subtitle">Pinterest-style masonry feed with local cache</p>
+        </div>
+      </div>
+      <nav class="subnav">
+        <a href="index.html" class="btn btn-secondary btn-sm">Catalog</a>
+        <a href="admin.html" class="btn btn-secondary btn-sm">Admin</a>
+        <a href="reports.html" class="btn btn-secondary btn-sm">Reports</a>
+        <a href="planner.html" class="btn btn-secondary btn-sm">Planner</a>
+        <a href="studio.html" class="btn btn-secondary btn-sm">Studio</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="gallery-error" class="message message-error" style="display:none"></div>
+
+    <section class="section">
+      <div class="gallery-controls">
+        <input id="gallery-search" type="text" placeholder="Filter by author..." aria-label="Filter by author">
+        <select id="gallery-columns" aria-label="Masonry column count">
+          <option value="2">2 Columns</option>
+          <option value="3" selected>3 Columns</option>
+          <option value="4">4 Columns</option>
+          <option value="5">5 Columns</option>
+        </select>
+        <button id="refresh-gallery" class="btn btn-secondary" type="button">Refresh API</button>
+        <button id="clear-gallery-cache" class="btn btn-secondary" type="button">Clear Cache</button>
+      </div>
+      <div id="gallery-meta" class="admin-summary">Ready</div>
+    </section>
+
+    <section class="section">
+      <div id="gallery-masonry" class="gallery-masonry" aria-live="polite"></div>
+    </section>
+
+    <section class="section text-center">
+      <button id="load-more-gallery" class="btn btn-primary" type="button">Load More</button>
+    </section>
+  </div>
+
+  <div id="gallery-lightbox" class="gallery-lightbox" hidden>
+    <button id="gallery-lightbox-close" class="btn btn-secondary btn-sm" type="button">Close</button>
+    <img id="gallery-lightbox-image" alt="Selected photo">
+    <p id="gallery-lightbox-caption"></p>
+  </div>
+
+  <script src="gallery.js"></script>
+</body>
+</html>

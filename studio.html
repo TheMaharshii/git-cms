@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git-CMS | Data Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand-row">
+        <img src="assets/logo.svg" alt="Git-CMS Logo" class="brand-logo" width="44" height="44">
+        <div>
+          <h1>Data Studio</h1>
+          <p class="header-subtitle">Generate mock catalogs, transform data, and export</p>
+        </div>
+      </div>
+      <nav class="subnav">
+        <a href="index.html" class="btn btn-secondary btn-sm">Catalog</a>
+        <a href="admin.html" class="btn btn-secondary btn-sm">Admin</a>
+        <a href="gallery.html" class="btn btn-secondary btn-sm">Gallery</a>
+        <a href="reports.html" class="btn btn-secondary btn-sm">Reports</a>
+        <a href="planner.html" class="btn btn-secondary btn-sm">Planner</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="section">
+      <div class="gallery-controls">
+        <input id="studio-count" type="number" value="12" min="1" max="200" placeholder="Count">
+        <button id="studio-generate" class="btn btn-primary" type="button">Generate Mock Catalog</button>
+        <button id="studio-minify" class="btn btn-secondary" type="button">Minify JSON</button>
+        <button id="studio-format" class="btn btn-secondary" type="button">Format JSON</button>
+        <button id="studio-download" class="btn btn-success" type="button">Download JSON</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Output</h2>
+      <textarea id="studio-output" class="studio-textarea" spellcheck="false"></textarea>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Quick Rules</h2>
+      <ul class="studio-list">
+        <li>Uses Picsum images with id range 1-300</li>
+        <li>Random dimensions stay between 1700x600 and 2300x2000</li>
+        <li>Output schema matches <code>{ items: [...] }</code></li>
+      </ul>
+    </section>
+  </div>
+
+  <script src="studio.js"></script>
+</body>
+</html>

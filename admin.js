@@ -81,6 +81,7 @@ const importModeSelect = document.getElementById('import-mode');
 
 const duplicateCurrentBtn = document.getElementById('duplicate-current-btn');
 const generateIdBtn = document.getElementById('generate-id-btn');
+const generateImageBtn = document.getElementById('generate-image-btn');
 const restoreDraftBtn = document.getElementById('restore-draft-btn');
 const clearDraftBtn = document.getElementById('clear-draft-btn');
 const imagePreview = document.getElementById('image-preview');
@@ -118,6 +119,17 @@ function escapeHtml(text) {
 
 function generateUniqueId() {
   return `prod_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generateRandomPicsumImageUrl() {
+  const imageId = randomInt(1, 300);
+  const width = randomInt(1700, 2300);
+  const height = randomInt(600, 2000);
+  return `https://picsum.photos/id/${imageId}/${width}/${height}`;
 }
 
 function normalizeDataShape(data) {
@@ -892,7 +904,7 @@ function addQuickSample() {
     name: `Sample Product ${currentData.items.length + 1}`,
     price: 49.99,
     category: 'Sample',
-    image: '',
+    image: generateRandomPicsumImageUrl(),
     description: 'Quick sample item generated from admin utility.',
   };
 
@@ -1202,6 +1214,13 @@ function bindMainEvents() {
   normalizeCategoriesBtn?.addEventListener('click', normalizeCategories);
   dedupeIdsBtn?.addEventListener('click', fixDuplicateIds);
   quickSampleBtn?.addEventListener('click', addQuickSample);
+
+  generateImageBtn?.addEventListener('click', () => {
+    itemImageInput.value = generateRandomPicsumImageUrl();
+    updateImagePreview();
+    saveDraft();
+    showMessage('Generated random Picsum image URL.', 'success');
+  });
 
   exportAllBtn?.addEventListener('click', exportData);
   exportCsvBtn?.addEventListener('click', exportCsv);

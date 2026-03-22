@@ -1,245 +1,157 @@
-<h1>Personal CMS / Product Manager 🌟</h1>
+<h1>Git-CMS 🚀</h1>
 
 <p>
-  Personal CMS is a lightweight GitHub-powered catalog manager built with vanilla JavaScript.
-  It uses <code>data.json</code> as the source of truth, with a clean frontend and a simple admin panel.
-  No backend required.
+  Git-CMS is a static, GitHub-backed catalog CMS built with vanilla JavaScript.
+  Public users browse <code>index.html</code> without auth, and admins manage catalog data from <code>admin.html</code> using GitHub API.
 </p>
 
-<h2>Public Frontend Mode</h2>
-<p>
-  <strong>index.html is now fully public.</strong> It reads directly from local <code>data.json</code>
-  and does not require owner/repo/token setup for visitors.
-</p>
-
-<h2>Connect Your Own Repo + Key (2 minutes)</h2>
-
-<ol>
-  <li>Copy this project into your own GitHub repository.</li>
-  <li>Make sure <code>data.json</code> exists at the repository root.</li>
-  <li>Open <code>index.html</code>; it is public and reads local <code>data.json</code> directly.</li>
-  <li>Use <code>admin.html</code> only if you want GitHub-based editing and sync.</li>
-</ol>
-
-<h2>Features</h2>
-
+<h2>What It Is</h2>
 <ul>
-  <li><strong>Frontend Display Page</strong> (<code>index.html</code>) with search, filter, sort, and view toggle.</li>
-  <li><strong>Admin Panel</strong> (<code>admin.html</code>) with full CRUD operations.</li>
-  <li><strong>GitHub as Database</strong> using <code>data.json</code> and GitHub REST API.</li>
-  <li><strong>Secure Authentication</strong> via manual PAT entry (not hardcoded).</li>
-  <li><strong>No Backend Required</strong>, fully static and deployable on GitHub Pages.</li>
-  <li><strong>Responsive UI</strong> for desktop and mobile.</li>
+  <li><strong>Public catalog frontend</strong> (no token required)</li>
+  <li><strong>Advanced admin panel</strong> (GitHub PAT required for save/sync)</li>
+  <li><strong>Single data file</strong>: <code>data.json</code></li>
+  <li><strong>No backend server</strong>, static-host friendly (GitHub Pages, Netlify, etc.)</li>
 </ul>
 
-<h2>File Structure</h2>
+<h2>Major Features</h2>
 
+<h3>New Multi-Page Experience</h3>
+<ul>
+  <li><strong>gallery.html</strong>: Picsum masonry gallery with API caching, lightbox, filters, and load-more append behavior</li>
+  <li><strong>reports.html</strong>: Visual analytics dashboard from <code>data.json</code> (stats, category chart, histogram, top products)</li>
+  <li><strong>planner.html</strong>: Local Kanban board for content/product workflow planning with drag/drop and persistence</li>
+  <li><strong>studio.html</strong>: Mock catalog generator + JSON formatter/minifier/downloader for rapid testing</li>
+</ul>
+
+<h3>Frontend (Public)</h3>
+<ul>
+  <li>Search with multi-word matching</li>
+  <li>Category filtering + quick category chips</li>
+  <li>Price range filtering (min/max)</li>
+  <li>Favorites system + favorites-only filter</li>
+  <li>Image-only filter</li>
+  <li>Sort by name, price, random shuffle</li>
+  <li>Cards/table view toggle with persistence</li>
+  <li>Pagination + page-size controls</li>
+  <li>Random product pick + highlight jump</li>
+  <li>Recently viewed items + clear recent</li>
+  <li>Share current filtered view via URL</li>
+  <li>Export visible items as JSON</li>
+  <li>Saved view presets (save/apply/delete)</li>
+  <li>Auto-refresh (off/30s/60s/120s)</li>
+  <li>Per-item JSON copy action</li>
+  <li>Scroll progress indicator + back-to-top button</li>
+  <li>Keyboard shortcuts: <code>/</code>, <code>v</code>, <code>n</code>, <code>p</code>, <code>Esc</code></li>
+</ul>
+
+<h3>Admin</h3>
+<ul>
+  <li>GitHub authentication (owner/repo/branch/token)</li>
+  <li>Add, edit, delete, duplicate items</li>
+  <li>Advanced filters, sorting, pagination</li>
+  <li>Bulk select and bulk operations (delete/category/price adjust)</li>
+  <li>Stats dashboard (total, categories, avg price, total value, missing images)</li>
+  <li>Undo/redo local history</li>
+  <li>Unsaved-change tracking + beforeunload guard</li>
+  <li>Save-all and reload-from-GitHub workflows</li>
+  <li>Form draft autosave + restore/clear draft</li>
+  <li>Live image preview</li>
+  <li>JSON live preview panel</li>
+  <li>Validation utilities (data quality, duplicate IDs, category normalization)</li>
+  <li>Quick sample product generator</li>
+  <li>Import JSON (replace/merge)</li>
+  <li>Export all JSON, visible JSON, visible CSV</li>
+  <li>Admin keyboard shortcuts: <code>Ctrl/Cmd+S</code>, <code>Ctrl/Cmd+F</code>, <code>Esc</code></li>
+</ul>
+
+<h2>Picsum Sample Images</h2>
+<p>
+  Admin sample products now use Lorem Picsum image URLs in this format:
+  <code>https://picsum.photos/id/{id}/{width}/{height}</code>
+</p>
+<ul>
+  <li><strong>id:</strong> random from <code>1</code> to <code>300</code></li>
+  <li><strong>width:</strong> random from <code>1700</code> to <code>2300</code></li>
+  <li><strong>height:</strong> random from <code>600</code> to <code>2000</code></li>
+  <li>Use <strong>Generate Picsum</strong> in admin form for instant test images</li>
+</ul>
+
+<h2>Project Structure</h2>
 <pre><code>.
-├── index.html           # Frontend display page
-├── admin.html           # Admin panel
-├── style.css            # Styling for both pages
-├── github-api.js        # GitHub API helper class
-├── app.js               # Frontend logic
-├── admin.js             # Admin panel logic
-├── data.json            # Database file (stored in GitHub repo)
-└── assets/              # SVG logo and icon assets
+├── index.html
+├── app.js
+├── admin.html
+├── admin.js
+├── gallery.html
+├── gallery.js
+├── reports.html
+├── reports.js
+├── planner.html
+├── planner.js
+├── studio.html
+├── studio.js
+├── github-api.js
+├── style.css
+├── data.json
+├── about.html
+├── README.md
+└── assets/
 </code></pre>
 
-<h2>Data Structure</h2>
-
-<p>Expected <code>data.json</code> format:</p>
-
+<h2>Data Format</h2>
 <pre><code>{
   "items": [
     {
       "id": "prod_001",
       "name": "Product Name",
       "price": 29.99,
-      "description": "Product description",
-      "image": "https://example.com/image.jpg",
-      "category": "Electronics"
+      "description": "Description",
+      "image": "https://picsum.photos/id/237/1920/1000",
+      "category": "Category"
     }
   ]
 }
 </code></pre>
 
-<p>Required/optional fields:</p>
-<ul>
-  <li><code>id</code> (required): unique identifier</li>
-  <li><code>name</code> (required): product name</li>
-  <li><code>price</code> (required): numeric value</li>
-  <li><code>description</code> (optional)</li>
-  <li><code>image</code> (optional)</li>
-  <li><code>category</code> (optional)</li>
-</ul>
+<h2>Run Locally</h2>
+<p>From project root:</p>
+<pre><code># Linux/macOS
+bash run.sh
 
-<h2>Setup Instructions</h2>
-
-<h3>Step 1: Create a GitHub Repository</h3>
-<ol>
-  <li>Go to <a href="https://github.com/new">github.com/new</a>.</li>
-  <li>Create a new repository (for example: <code>my-cms</code>).</li>
-  <li>Initialize it with a README.</li>
-  <li>Clone locally or upload files directly.</li>
-</ol>
-
-<h3>Step 2: Add Project Files</h3>
-<ul>
-  <li><code>index.html</code></li>
-  <li><code>admin.html</code></li>
-  <li><code>data.json</code></li>
-  <li><code>style.css</code></li>
-  <li><code>github-api.js</code></li>
-  <li><code>app.js</code></li>
-  <li><code>admin.js</code></li>
-</ul>
-
-<pre><code>git add .
-git commit -m "Initial commit: add CMS app"
-git push origin main
+# Windows
+run.bat
 </code></pre>
 
-<h3>Step 3: Create a Personal Access Token (PAT)</h3>
-<ol>
-  <li>Go to <a href="https://github.com/settings/tokens">github.com/settings/tokens</a>.</li>
-  <li>Create either:
-    <ul>
-      <li><strong>Fine-grained token</strong> (recommended): target repo + <strong>Contents: Read and write</strong></li>
-      <li><strong>Classic token</strong>: <code>repo</code> (or <code>public_repo</code> for public-only use)</li>
-    </ul>
-  </li>
-  <li>Copy token immediately (GitHub only shows it once).</li>
-</ol>
+<p>If needed, direct run:</p>
+<pre><code>python3 -m http.server 8000
+</code></pre>
 
-<h3>Step 4: Deploy to GitHub Pages</h3>
-<ol>
-  <li>Open repository settings.</li>
-  <li>Go to Pages section.</li>
-  <li>Set source branch (usually <code>main</code>).</li>
-  <li>Wait 1-2 minutes for deployment.</li>
-</ol>
-
-<p>URL example: <code>https://username.github.io/repo-name</code></p>
-
-<h3>Step 5: Access the App</h3>
+<p>Then open:</p>
 <ul>
-  <li>Frontend: <code>https://username.github.io/repo-name/index.html</code></li>
-  <li>Admin: <code>https://username.github.io/repo-name/admin.html</code></li>
+  <li><code>http://localhost:8000/index.html</code></li>
+  <li><code>http://localhost:8000/admin.html</code></li>
 </ul>
 
-<p>No frontend repo/token configuration is required.</p>
-
-<h2>How to Use</h2>
-
-<h3>Frontend</h3>
+<h2>Admin Setup (GitHub)</h2>
 <ol>
-  <li>Open <code>index.html</code> or your deployed frontend URL.</li>
-  <li>Data loads directly from local/public <code>data.json</code>.</li>
-  <li>Use search, category filter, sort, view toggle, and admin link.</li>
+  <li>Create a PAT at <a href="https://github.com/settings/tokens">GitHub Tokens</a>.</li>
+  <li>Grant contents write access for your repo.</li>
+  <li>Open <code>admin.html</code> and sign in with owner/repo/branch/token.</li>
 </ol>
-
-<h3>Admin Panel</h3>
-<ol>
-  <li>Open <code>admin.html</code>.</li>
-  <li>Enter GitHub username, repo, branch, and PAT.</li>
-  <li>Click Sign In.</li>
-  <li>Add, edit, delete, search, export, and import items.</li>
-</ol>
-
-<h2>GitHub API Operations</h2>
-
-<p>Fetch file:</p>
-<pre><code>GET /repos/{owner}/{repo}/contents/data.json</code></pre>
-
-<p>Update file:</p>
-<pre><code>PUT /repos/{owner}/{repo}/contents/data.json</code></pre>
-
-<p>Update payload includes:</p>
-<ul>
-  <li><code>message</code></li>
-  <li><code>content</code> (base64 JSON)</li>
-  <li><code>sha</code> (for conflict safety)</li>
-  <li><code>branch</code></li>
-</ul>
 
 <h2>Security Notes</h2>
-
-<h3>Token Security</h3>
 <ul>
-  <li>PAT is never hardcoded.</li>
-  <li>PAT is not saved to disk.</li>
-  <li>PAT is never committed to repository.</li>
-  <li>Use token expiration and rotate regularly.</li>
+  <li>Token is entered manually in admin UI.</li>
+  <li>No token is committed to repository code.</li>
+  <li>Rotate PAT regularly and use least privilege.</li>
 </ul>
 
-<h3>Best Practices</h3>
+<h2>Limitations</h2>
 <ul>
-  <li>Prefer fine-grained tokens with least privilege.</li>
-  <li>Limit token to required repository.</li>
-  <li>Regenerate tokens if compromised.</li>
+  <li>Not a multi-user role-based CMS</li>
+  <li>Data scale depends on JSON size and client performance</li>
+  <li>No server-side search/indexing layer</li>
 </ul>
-
-<h2>Troubleshooting</h2>
-
-<ul>
-  <li><strong>Unauthorized / Invalid token:</strong> regenerate token, verify scopes/permissions.</li>
-  <li><strong>Repository not found:</strong> verify owner/repo spelling and permissions.</li>
-  <li><strong>File not found:</strong> ensure <code>data.json</code> exists at repository root.</li>
-  <li><strong>Decode errors:</strong> repair invalid <code>data.json</code> content.</li>
-  <li><strong>Frontend not updating:</strong> hard refresh and wait for Pages rebuild.</li>
-</ul>
-
-<h2>Advanced Usage</h2>
-
-<h3>Custom Domain</h3>
-<ol>
-  <li>Set custom domain in GitHub Pages settings.</li>
-  <li>Add <code>CNAME</code> file.</li>
-  <li>Configure DNS at registrar.</li>
-</ol>
-
-<h3>Bulk Operations</h3>
-<ol>
-  <li>Export all data.</li>
-  <li>Edit JSON locally.</li>
-  <li>Import data back.</li>
-</ol>
-
-<h3>Multiple Repositories</h3>
-<p>Use different owner/repo values per deployment or admin login.</p>
-
-<h2>Limitations &amp; Considerations</h2>
-
-<ul>
-  <li>No multi-user account system.</li>
-  <li>No concurrent edit lock system.</li>
-  <li>Large JSON files may impact performance.</li>
-  <li>Internet is required for GitHub sync.</li>
-  <li>No transactional database guarantees.</li>
-</ul>
-
-<h2>Browser Support</h2>
-
-<ul>
-  <li>Chrome / Chromium (latest)</li>
-  <li>Firefox (latest)</li>
-  <li>Safari (latest)</li>
-  <li>Edge (latest)</li>
-  <li>Modern mobile browsers</li>
-</ul>
-
-<p>Requires ES6 support, Fetch API, and LocalStorage.</p>
-
-<h2>License</h2>
-<p>This project is open source and free to use.</p>
-
-<h2>Support</h2>
-<p>
-  For issues, check Troubleshooting first, verify PAT permissions/expiration,
-  and confirm <code>data.json</code> exists with valid JSON.
-</p>
 
 <hr />
-
-<p><strong>Built with vanilla JavaScript — no frameworks, no build step, no dependencies.</strong></p>
-<p>Enjoy your personal CMS! 🚀</p>
+<p><strong>Git-CMS:</strong> modern static catalog management with zero framework overhead.</p>

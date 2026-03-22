@@ -16,6 +16,13 @@
           <p class="header-subtitle">Advanced management for your public catalog</p>
         </div>
       </div>
+      <nav class="subnav">
+        <a href="index.html" class="btn btn-secondary btn-sm">Catalog</a>
+        <a href="gallery.html" class="btn btn-secondary btn-sm">Gallery</a>
+        <a href="reports.html" class="btn btn-secondary btn-sm">Reports</a>
+        <a href="planner.html" class="btn btn-secondary btn-sm">Planner</a>
+        <a href="studio.html" class="btn btn-secondary btn-sm">Studio</a>
+      </nav>
     </div>
   </header>
 
@@ -142,7 +149,10 @@
 
           <div class="form-group">
             <label for="item-image">Image URL</label>
-            <input type="url" id="item-image" placeholder="https://example.com/image.jpg">
+            <div class="inline-field">
+              <input type="url" id="item-image" placeholder="https://example.com/image.jpg">
+              <button id="generate-image-btn" class="btn btn-secondary btn-sm" type="button">Generate Picsum</button>
+            </div>
             <div class="image-preview-wrap" id="image-preview-wrap">
               <img id="image-preview" alt="Image preview" loading="lazy">
               <span id="image-preview-empty">No preview</span>

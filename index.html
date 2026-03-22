@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="scroll-progress" class="scroll-progress"></div>
   <header class="site-header">
     <div class="container">
       <div class="brand-row">
@@ -16,6 +17,13 @@
           <p class="header-subtitle">Simple public catalog</p>
         </div>
       </div>
+      <nav class="subnav">
+        <a href="gallery.html" class="btn btn-secondary btn-sm">Gallery</a>
+        <a href="reports.html" class="btn btn-secondary btn-sm">Reports</a>
+        <a href="planner.html" class="btn btn-secondary btn-sm">Planner</a>
+        <a href="studio.html" class="btn btn-secondary btn-sm">Studio</a>
+        <a href="about.html" class="btn btn-secondary btn-sm">About</a>
+      </nav>
     </div>
   </header>
 
@@ -98,6 +106,25 @@
             Favorites only
           </label>
 
+          <label class="inline-toggle" for="only-images">
+            <input type="checkbox" id="only-images">
+            With images
+          </label>
+
+          <select id="auto-refresh" aria-label="Auto refresh interval">
+            <option value="0">Auto refresh: Off</option>
+            <option value="30">Auto refresh: 30s</option>
+            <option value="60">Auto refresh: 60s</option>
+            <option value="120">Auto refresh: 120s</option>
+          </select>
+
+          <select id="view-presets" aria-label="Saved views">
+            <option value="">Saved views</option>
+          </select>
+
+          <button id="save-view-btn" class="btn btn-secondary" type="button">Save View</button>
+          <button id="delete-view-btn" class="btn btn-secondary" type="button">Delete View</button>
+
           <button id="clear-filters" class="btn btn-secondary" type="button">Clear</button>
           <button id="shuffle-btn" class="btn btn-secondary" type="button">Shuffle</button>
           <button id="random-pick-btn" class="btn btn-secondary" type="button">Random Pick</button>
@@ -119,6 +146,10 @@
         </div>
       </div>
 
+      <div class="section">
+        <div id="category-chips" class="chips-row" aria-label="Quick category chips"></div>
+      </div>
+
       <!-- Items Container -->
       <div class="section">
         <div id="items-container" class="items-grid">
@@ -131,13 +162,18 @@
       </div>
 
       <div class="section">
-        <h2 class="section-title">Recently Viewed</h2>
+        <div class="section-header-inline">
+          <h2 class="section-title">Recently Viewed</h2>
+          <button id="clear-recent-btn" class="btn btn-secondary btn-sm" type="button">Clear Recent</button>
+        </div>
         <div id="recently-viewed" class="recent-grid">
           <p class="empty-state">No recently viewed items</p>
         </div>
       </div>
     </div>
   </div>
+
+  <button id="back-to-top" class="back-to-top" type="button" aria-label="Back to top">↑</button>
 
   <!-- Scripts -->
   <script src="app.js"></script>

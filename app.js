@@ -6,10 +6,12 @@
 const STORAGE_KEY = 'gitcms_ui_state_v2';
 const FAVORITES_KEY = 'gitcms_favorites_v1';
 const RECENT_KEY = 'gitcms_recent_v1';
+const PRESETS_KEY = 'gitcms_view_presets_v1';
 const RECENT_LIMIT = 6;
 
 let appData = { items: [] };
 let lastLoadedAt = null;
+let autoRefreshTimer = null;
 
 const uiState = {
   searchQuery: '',
@@ -19,12 +21,15 @@ const uiState = {
   minPrice: '',
   maxPrice: '',
   favoritesOnly: false,
+  onlyWithImages: false,
   page: 1,
   pageSize: 12,
+  autoRefreshSeconds: 0,
   randomSeed: 0,
   highlightKey: '',
   favorites: new Set(),
   recentKeys: [],
+  presets: [],
 };
 
 async function fetchPublicData() {
@@ -95,6 +100,10 @@ function getFilteredAndSortedItems() {
     visibleItems = visibleItems.filter((item) => uiState.favorites.has(item._key));
   }
 
+  if (uiState.onlyWithImages) {
+    visibleItems = visibleItems.filter((item) => String(item.image || '').trim().length > 0);
+  }
+
   if (uiState.sortBy === 'name-asc') {
     visibleItems.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
   } else if (uiState.sortBy === 'name-desc') {
@@ -128,6 +137,7 @@ function displayItems() {
 
   updateSummary(allVisible.length, totalPages);
   renderPagination(allVisible.length, totalPages);
+  renderCategoryChips();
 
   if (!pageItems.length) {
     container.className = 'items-grid';
@@ -175,6 +185,10 @@ function displayAsCards(container, items) {
         ${item.description ? `<p class="item-description">${escapeHtml(item.description)}</p>` : ''}
         <div class="item-footer">
           <span class="item-price">$${parseFloat(item.price || 0).toFixed(2)}</span>
+          <div class="item-actions">
+            <button class="btn btn-secondary btn-sm" type="button" data-copy-key="${escapeHtml(item._key)}">Copy JSON</button>
+            ${item.image ? `<a class="btn btn-secondary btn-sm" href="${escapeHtml(item.image)}" target="_blank" rel="noopener noreferrer">Open Image</a>` : ''}
+          </div>
         </div>
       </div>
     `;
@@ -199,6 +213,7 @@ function displayAsTable(container, items) {
         <th>Category</th>
         <th>Price</th>
         <th>Description</th>
+        <th>Actions</th>
       </tr>
     </thead>
   `;
@@ -217,6 +232,9 @@ function displayAsTable(container, items) {
       <td>${escapeHtml(item.category || 'N/A')}</td>
       <td>$${parseFloat(item.price || 0).toFixed(2)}</td>
       <td>${escapeHtml((item.description || '').substring(0, 90))}${(item.description || '').length > 90 ? '...' : ''}</td>
+      <td>
+        <button class="btn btn-secondary btn-sm" type="button" data-copy-key="${escapeHtml(item._key)}">Copy JSON</button>
+      </td>
     `;
     tbody.appendChild(row);
   });
@@ -279,6 +297,27 @@ function renderRecentlyViewed() {
   `).join('');
 }
 
+function renderCategoryChips() {
+  const chipsContainer = document.getElementById('category-chips');
+  if (!chipsContainer) return;
+
+  const categories = Array.from(
+    new Set((appData.items || []).map((item) => (item.category || '').trim()).filter(Boolean))
+  ).sort((a, b) => a.localeCompare(b));
+
+  if (!categories.length) {
+    chipsContainer.innerHTML = '';
+    return;
+  }
+
+  const allChip = `<button class="chip-btn ${uiState.selectedCategory === 'all' ? 'active' : ''}" type="button" data-chip-category="all">All</button>`;
+  const chips = categories.slice(0, 12).map((category) => (
+    `<button class="chip-btn ${uiState.selectedCategory === category ? 'active' : ''}" type="button" data-chip-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`
+  )).join('');
+
+  chipsContainer.innerHTML = allChip + chips;
+}
+
 function showError(message) {
   const errorDiv = document.getElementById('error-message');
   if (errorDiv) {
@@ -337,7 +376,9 @@ function applyControlValues() {
   const minPriceInput = document.getElementById('min-price');
   const maxPriceInput = document.getElementById('max-price');
   const favoritesOnly = document.getElementById('favorites-only');
+  const onlyImages = document.getElementById('only-images');
   const pageSizeSelect = document.getElementById('page-size');
+  const autoRefreshSelect = document.getElementById('auto-refresh');
 
   if (searchInput) searchInput.value = uiState.searchQuery;
   if (categorySelect) categorySelect.value = uiState.selectedCategory;
@@ -346,7 +387,9 @@ function applyControlValues() {
   if (minPriceInput) minPriceInput.value = uiState.minPrice;
   if (maxPriceInput) maxPriceInput.value = uiState.maxPrice;
   if (favoritesOnly) favoritesOnly.checked = uiState.favoritesOnly;
+  if (onlyImages) onlyImages.checked = uiState.onlyWithImages;
   if (pageSizeSelect) pageSizeSelect.value = String(uiState.pageSize);
+  if (autoRefreshSelect) autoRefreshSelect.value = String(uiState.autoRefreshSeconds);
 }
 
 function persistUiState() {
@@ -358,8 +401,10 @@ function persistUiState() {
     minPrice: uiState.minPrice,
     maxPrice: uiState.maxPrice,
     favoritesOnly: uiState.favoritesOnly,
+    onlyWithImages: uiState.onlyWithImages,
     page: uiState.page,
     pageSize: uiState.pageSize,
+    autoRefreshSeconds: uiState.autoRefreshSeconds,
     randomSeed: uiState.randomSeed,
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
@@ -377,8 +422,10 @@ function restoreUiState() {
     uiState.minPrice = saved.minPrice === '' ? '' : (saved.minPrice ?? '');
     uiState.maxPrice = saved.maxPrice === '' ? '' : (saved.maxPrice ?? '');
     uiState.favoritesOnly = Boolean(saved.favoritesOnly);
+    uiState.onlyWithImages = Boolean(saved.onlyWithImages);
     uiState.page = Number(saved.page) > 0 ? Number(saved.page) : 1;
     uiState.pageSize = [6, 12, 18, 24].includes(Number(saved.pageSize)) ? Number(saved.pageSize) : 12;
+    uiState.autoRefreshSeconds = [0, 30, 60, 120].includes(Number(saved.autoRefreshSeconds)) ? Number(saved.autoRefreshSeconds) : 0;
     uiState.randomSeed = Number(saved.randomSeed) || 0;
 
     const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
@@ -386,6 +433,9 @@ function restoreUiState() {
 
     const recent = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
     uiState.recentKeys = Array.isArray(recent) ? recent.slice(0, RECENT_LIMIT) : [];
+
+    const presets = JSON.parse(localStorage.getItem(PRESETS_KEY) || '[]');
+    uiState.presets = Array.isArray(presets) ? presets.slice(0, 30) : [];
   } catch (error) {
     console.warn('Failed to restore UI state', error);
   }
@@ -402,6 +452,7 @@ function syncUrlState() {
   if (uiState.minPrice !== '') params.set('min', String(uiState.minPrice));
   if (uiState.maxPrice !== '') params.set('max', String(uiState.maxPrice));
   if (uiState.favoritesOnly) params.set('f', '1');
+  if (uiState.onlyWithImages) params.set('img', '1');
 
   const query = params.toString();
   const target = query ? `${window.location.pathname}?${query}` : window.location.pathname;
@@ -422,6 +473,7 @@ function restoreStateFromUrl() {
   if (params.has('min')) uiState.minPrice = params.get('min') || '';
   if (params.has('max')) uiState.maxPrice = params.get('max') || '';
   if (params.get('f') === '1') uiState.favoritesOnly = true;
+  if (params.get('img') === '1') uiState.onlyWithImages = true;
 }
 
 function clearFilters() {
@@ -431,6 +483,7 @@ function clearFilters() {
   uiState.minPrice = '';
   uiState.maxPrice = '';
   uiState.favoritesOnly = false;
+  uiState.onlyWithImages = false;
   uiState.page = 1;
   uiState.randomSeed = 0;
   uiState.highlightKey = '';
@@ -537,6 +590,157 @@ function shuffleItems() {
   displayItems();
 }
 
+function getItemByKey(itemKey) {
+  return (appData.items || []).find((item) => item._key === itemKey) || null;
+}
+
+function copyItemJson(itemKey) {
+  const item = getItemByKey(itemKey);
+  if (!item) return;
+  const safeCopy = { ...item };
+  delete safeCopy._key;
+  const text = JSON.stringify(safeCopy, null, 2);
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text)
+      .then(() => setCatalogMeta('Item JSON copied'))
+      .catch(() => fallbackCopyToClipboard(text));
+  } else {
+    fallbackCopyToClipboard(text);
+  }
+}
+
+function clearRecentItems() {
+  uiState.recentKeys = [];
+  persistUiState();
+  renderRecentlyViewed();
+  setCatalogMeta('Recently viewed cleared');
+}
+
+function renderPresets() {
+  const select = document.getElementById('view-presets');
+  if (!select) return;
+
+  select.innerHTML = '<option value="">Saved views</option>';
+  uiState.presets.forEach((preset) => {
+    const option = document.createElement('option');
+    option.value = preset.id;
+    option.textContent = preset.name;
+    select.appendChild(option);
+  });
+}
+
+function saveCurrentPreset() {
+  const name = window.prompt('Name for this view preset:');
+  if (!name || !name.trim()) return;
+
+  const preset = {
+    id: `preset_${Date.now()}`,
+    name: name.trim().slice(0, 40),
+    state: {
+      searchQuery: uiState.searchQuery,
+      selectedCategory: uiState.selectedCategory,
+      sortBy: uiState.sortBy,
+      minPrice: uiState.minPrice,
+      maxPrice: uiState.maxPrice,
+      favoritesOnly: uiState.favoritesOnly,
+      onlyWithImages: uiState.onlyWithImages,
+      pageSize: uiState.pageSize,
+      viewType: uiState.viewType,
+    },
+  };
+
+  uiState.presets.unshift(preset);
+  uiState.presets = uiState.presets.slice(0, 30);
+  localStorage.setItem(PRESETS_KEY, JSON.stringify(uiState.presets));
+  renderPresets();
+  setCatalogMeta('View preset saved');
+}
+
+function applyPreset(presetId) {
+  const preset = uiState.presets.find((entry) => entry.id === presetId);
+  if (!preset) return;
+
+  const state = preset.state || {};
+  uiState.searchQuery = String(state.searchQuery || '');
+  uiState.selectedCategory = String(state.selectedCategory || 'all');
+  uiState.sortBy = String(state.sortBy || 'name-asc');
+  uiState.minPrice = state.minPrice ?? '';
+  uiState.maxPrice = state.maxPrice ?? '';
+  uiState.favoritesOnly = Boolean(state.favoritesOnly);
+  uiState.onlyWithImages = Boolean(state.onlyWithImages);
+  uiState.pageSize = [6, 12, 18, 24].includes(Number(state.pageSize)) ? Number(state.pageSize) : 12;
+  uiState.viewType = state.viewType === 'table' ? 'table' : 'cards';
+  uiState.page = 1;
+
+  applyControlValues();
+  displayItems();
+  setCatalogMeta(`Preset applied: ${preset.name}`);
+}
+
+function deleteCurrentPreset() {
+  const select = document.getElementById('view-presets');
+  if (!select || !select.value) {
+    showError('Select a preset to delete.');
+    return;
+  }
+  const presetId = select.value;
+  const preset = uiState.presets.find((entry) => entry.id === presetId);
+  if (!preset) return;
+
+  if (!window.confirm(`Delete preset "${preset.name}"?`)) return;
+
+  clearError();
+  uiState.presets = uiState.presets.filter((entry) => entry.id !== presetId);
+  localStorage.setItem(PRESETS_KEY, JSON.stringify(uiState.presets));
+  renderPresets();
+  setCatalogMeta('Preset deleted');
+}
+
+function setAutoRefresh(seconds) {
+  uiState.autoRefreshSeconds = [0, 30, 60, 120].includes(seconds) ? seconds : 0;
+
+  if (autoRefreshTimer) {
+    clearInterval(autoRefreshTimer);
+    autoRefreshTimer = null;
+  }
+
+  if (uiState.autoRefreshSeconds > 0) {
+    autoRefreshTimer = setInterval(async () => {
+      const success = await fetchPublicData();
+      if (success) {
+        populateCategoryFilter();
+        displayItems();
+        setCatalogMeta(`Auto-refreshed (${uiState.autoRefreshSeconds}s)`);
+      }
+    }, uiState.autoRefreshSeconds * 1000);
+  }
+
+  persistUiState();
+}
+
+function bindScrollUx() {
+  const progress = document.getElementById('scroll-progress');
+  const backToTop = document.getElementById('back-to-top');
+
+  const update = () => {
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - window.innerHeight;
+    const ratio = max > 0 ? (window.scrollY / max) : 0;
+    if (progress) {
+      progress.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+    }
+    if (backToTop) {
+      backToTop.classList.toggle('visible', window.scrollY > 420);
+    }
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  backToTop?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  update();
+}
+
 function setCatalogMeta(message) {
   const metaEl = document.getElementById('catalog-meta');
   if (!metaEl) return;
@@ -584,7 +788,10 @@ function bindEvents() {
   const minPriceInput = document.getElementById('min-price');
   const maxPriceInput = document.getElementById('max-price');
   const favoritesOnly = document.getElementById('favorites-only');
+  const onlyImages = document.getElementById('only-images');
   const pageSizeSelect = document.getElementById('page-size');
+  const autoRefreshSelect = document.getElementById('auto-refresh');
+  const presetsSelect = document.getElementById('view-presets');
 
   if (searchInput) {
     searchInput.addEventListener('input', debounce((e) => {
@@ -642,6 +849,14 @@ function bindEvents() {
     });
   }
 
+  if (onlyImages) {
+    onlyImages.addEventListener('change', (e) => {
+      uiState.onlyWithImages = Boolean(e.target.checked);
+      uiState.page = 1;
+      displayItems();
+    });
+  }
+
   if (pageSizeSelect) {
     pageSizeSelect.addEventListener('change', (e) => {
       const nextSize = Number(e.target.value) || 12;
@@ -651,11 +866,29 @@ function bindEvents() {
     });
   }
 
+  if (autoRefreshSelect) {
+    autoRefreshSelect.addEventListener('change', (e) => {
+      const seconds = Number(e.target.value) || 0;
+      setAutoRefresh(seconds);
+      setCatalogMeta(seconds ? `Auto refresh every ${seconds}s` : 'Auto refresh disabled');
+    });
+  }
+
+  if (presetsSelect) {
+    presetsSelect.addEventListener('change', (e) => {
+      if (!e.target.value) return;
+      applyPreset(e.target.value);
+    });
+  }
+
   document.getElementById('clear-filters')?.addEventListener('click', clearFilters);
   document.getElementById('shuffle-btn')?.addEventListener('click', shuffleItems);
   document.getElementById('random-pick-btn')?.addEventListener('click', randomPick);
   document.getElementById('share-view-btn')?.addEventListener('click', shareCurrentView);
   document.getElementById('export-visible-btn')?.addEventListener('click', exportVisibleItems);
+  document.getElementById('save-view-btn')?.addEventListener('click', saveCurrentPreset);
+  document.getElementById('delete-view-btn')?.addEventListener('click', deleteCurrentPreset);
+  document.getElementById('clear-recent-btn')?.addEventListener('click', clearRecentItems);
 
   document.getElementById('pagination')?.addEventListener('click', (e) => {
     const target = e.target;
@@ -686,6 +919,13 @@ function bindEvents() {
     }
 
     const itemNode = target.closest('[data-item-key]');
+    const copyBtn = target.closest('[data-copy-key]');
+    if (copyBtn instanceof HTMLElement) {
+      const copyKey = copyBtn.getAttribute('data-copy-key');
+      copyItemJson(copyKey);
+      return;
+    }
+
     if (itemNode instanceof HTMLElement) {
       const itemKey = itemNode.getAttribute('data-item-key');
       markRecentlyViewed(itemKey);
@@ -701,6 +941,19 @@ function bindEvents() {
     if (jumpBtn instanceof HTMLElement) {
       jumpToItem(jumpBtn.getAttribute('data-jump-key'));
     }
+  });
+
+  document.getElementById('category-chips')?.addEventListener('click', (e) => {
+    const target = e.target;
+    if (!(target instanceof HTMLElement)) return;
+    const chip = target.closest('[data-chip-category]');
+    if (!(chip instanceof HTMLElement)) return;
+    const value = chip.getAttribute('data-chip-category') || 'all';
+    uiState.selectedCategory = value;
+    uiState.page = 1;
+    const categorySelect = document.getElementById('category-filter');
+    if (categorySelect) categorySelect.value = value;
+    displayItems();
   });
 
   document.addEventListener('keydown', (event) => {
@@ -731,6 +984,16 @@ function bindEvents() {
         displayItems();
       }
     }
+
+    if (event.key.toLowerCase() === 'n' && !isTyping) {
+      uiState.page += 1;
+      displayItems();
+    }
+
+    if (event.key.toLowerCase() === 'p' && !isTyping) {
+      uiState.page = Math.max(1, uiState.page - 1);
+      displayItems();
+    }
   });
 }
 
@@ -753,7 +1016,10 @@ async function initApp() {
   clearError();
   populateCategoryFilter();
   applyControlValues();
+  renderPresets();
   bindEvents();
+  bindScrollUx();
+  setAutoRefresh(uiState.autoRefreshSeconds);
   displayItems();
 }
 

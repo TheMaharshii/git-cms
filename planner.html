@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git-CMS | Content Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand-row">
+        <img src="assets/logo.svg" alt="Git-CMS Logo" class="brand-logo" width="44" height="44">
+        <div>
+          <h1>Content Planner</h1>
+          <p class="header-subtitle">Kanban board for catalog ideas and publishing workflow</p>
+        </div>
+      </div>
+      <nav class="subnav">
+        <a href="index.html" class="btn btn-secondary btn-sm">Catalog</a>
+        <a href="gallery.html" class="btn btn-secondary btn-sm">Gallery</a>
+        <a href="reports.html" class="btn btn-secondary btn-sm">Reports</a>
+        <a href="studio.html" class="btn btn-secondary btn-sm">Studio</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="section">
+      <div class="planner-controls">
+        <input id="planner-title" type="text" placeholder="Task title (e.g., Add Winter collection)">
+        <input id="planner-tags" type="text" placeholder="Tags (comma separated)">
+        <select id="planner-column">
+          <option value="todo">Todo</option>
+          <option value="inprogress">In Progress</option>
+          <option value="review">Review</option>
+          <option value="done">Done</option>
+        </select>
+        <button id="planner-add" class="btn btn-success" type="button">Add Card</button>
+        <button id="planner-clear" class="btn btn-secondary" type="button">Clear Board</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="kanban-grid" id="kanban-grid">
+        <div class="kanban-col" data-col="todo">
+          <h3>Todo</h3>
+          <div class="kanban-list" data-list="todo"></div>
+        </div>
+        <div class="kanban-col" data-col="inprogress">
+          <h3>In Progress</h3>
+          <div class="kanban-list" data-list="inprogress"></div>
+        </div>
+        <div class="kanban-col" data-col="review">
+          <h3>Review</h3>
+          <div class="kanban-list" data-list="review"></div>
+        </div>
+        <div class="kanban-col" data-col="done">
+          <h3>Done</h3>
+          <div class="kanban-list" data-list="done"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="planner.js"></script>
+</body>
+</html>
