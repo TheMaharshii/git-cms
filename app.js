@@ -197,12 +197,24 @@ function populateCategoryFilter() {
     )
   ).sort((a, b) => a.localeCompare(b));
 
-  const options = ['<option value="all">All Categories</option>'];
+  categorySelect.innerHTML = '';
+
+  const defaultOption = document.createElement('option');
+  defaultOption.value = 'all';
+  defaultOption.textContent = 'All Categories';
+  categorySelect.appendChild(defaultOption);
+
   categories.forEach((category) => {
-    options.push(`<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`);
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    categorySelect.appendChild(option);
   });
 
-  categorySelect.innerHTML = options.join('');
+  if (!categories.includes(uiState.selectedCategory)) {
+    uiState.selectedCategory = 'all';
+  }
+
   categorySelect.value = uiState.selectedCategory;
 }
 
