@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Manager - CMS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand-row">
+        <img src="assets/logo.svg" alt="CMS Logo" class="brand-logo" width="44" height="44">
+        <div>
+          <h1>Product Manager</h1>
+          <p class="header-subtitle">A clean catalog powered by your GitHub data</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Error Message -->
+    <div id="error-message" role="alert"></div>
+
+    <!-- Loading State -->
+    <div id="loading" class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading products...</p>
+    </div>
+
+    <!-- Main Content (hidden while loading) -->
+    <div id="main-content" style="display: none;">
+      <!-- Controls Section -->
+      <div class="section">
+        <div class="top-controls">
+          <!-- Search -->
+          <div class="search-input-wrapper">
+            <img src="assets/icon-search.svg" alt="Search" class="input-icon" width="18" height="18">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search products..."
+              aria-label="Search products"
+            >
+          </div>
+
+          <!-- Category Filter -->
+          <select id="category-filter" aria-label="Filter by category">
+            <option value="all">All Categories</option>
+          </select>
+
+          <!-- Sort -->
+          <select id="sort-select" aria-label="Sort by">
+            <option value="name-asc">Sort: Name (A-Z)</option>
+            <option value="name-desc">Sort: Name (Z-A)</option>
+            <option value="price-asc">Sort: Price (Low-High)</option>
+            <option value="price-desc">Sort: Price (High-Low)</option>
+          </select>
+
+          <!-- View Toggle -->
+          <select id="view-toggle" aria-label="View type">
+            <option value="cards">View: Cards</option>
+            <option value="table">View: Table</option>
+          </select>
+
+          <!-- Admin Link -->
+          <a href="admin.html" class="btn btn-secondary">
+            <img src="assets/icon-admin.svg" alt="Admin" class="icon-sm" width="16" height="16">
+            Admin Panel
+          </a>
+        </div>
+      </div>
+
+      <!-- Items Container -->
+      <div class="section">
+        <div id="items-container" class="items-grid">
+          <!-- Items populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="github-api.js"></script>
+  
+  <!-- Configure your repo defaults here (optional) -->
+  <script>
+    window.CMS_DEFAULT_OWNER = '';
+    window.CMS_DEFAULT_REPO = '';
+    window.CMS_DEFAULT_BRANCH = 'main';
+  </script>
+  
+  <script src="app.js"></script>
+</body>
+</html>

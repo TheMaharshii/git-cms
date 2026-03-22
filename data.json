@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "prod_001",
+      "name": "Sample Product",
+      "price": 29.99,
+      "description": "This is a sample product",
+      "image": "https://picsum.photos/seed/picsum/200/300",
+      "category": "Electronics"
+    },
+    {
+      "id": "prod_1773904912413_289",
+      "name": "Test",
+      "price": 0,
+      "description": "",
+      "image": "",
+      "category": ""
+    },
+    {
+      "id": "prod_1773904912413_350",
+      "name": "Test123",
+      "price": 40,
+      "description": "Hello world",
+      "image": "https://lorempicsum.photos/seed/picsum/200/300",
+      "category": "Electronics"
+    }
+  ]
+}

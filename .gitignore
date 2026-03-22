@@ -1,0 +1,59 @@
+# Git ignore patterns for personal CMS
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.classpath
+*.log
+
+# Node modules (if using any build tools)
+node_modules/
+npm-debug.log
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+temp/
+tmp/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Backup files
+*.backup
+*.backup.json
+data.json.bak
+
+# Local development
+local_config.js
+test.json
+
+# Build artifacts (if any)
+dist/
+build/
+
+# Important: NEVER commit your Personal Access Token or any secrets
+# If you accidentally exposed your token, regenerate it immediately:
+# https://github.com/settings/tokens
+
+# Comments or notes with sensitive info
+notes.txt
+IDEAS.txt
+SECRETS.txt
+
+# Keep data.json in repo though - it's your content!
+# Only .gitignore credentials and temporary files
