@@ -36,24 +36,48 @@
       "id": "prod_1774169889009_686",
       "name": "Sample Product 5",
       "price": 49.99,
-      "category": "Sample",
+      "description": "Quick sample item generated from admin utility.",
       "image": "",
-      "description": "Quick sample item generated from admin utility."
+      "category": "Sample"
     },
     {
       "id": "prod_1774169889865_6279",
       "name": "Sample Product 6",
       "price": 49.99,
-      "category": "Sample",
+      "description": "Quick sample item generated from admin utility.",
       "image": "",
-      "description": "Quick sample item generated from admin utility."
+      "category": "Sample"
     },
     {
       "id": "prod_1774169890569_4965",
       "name": "Sample Product 7",
       "price": 49.99,
-      "category": "Sample",
+      "description": "Quick sample item generated from admin utility.",
       "image": "",
+      "category": "Sample"
+    },
+    {
+      "id": "prod_1774172488852_3229",
+      "name": "Sample Product 8",
+      "price": 49.99,
+      "category": "Sample",
+      "image": "https://picsum.photos/id/261/2241/1002",
+      "description": "Quick sample item generated from admin utility."
+    },
+    {
+      "id": "prod_1774172495980_1771",
+      "name": "Sample Product 9",
+      "price": 49.99,
+      "category": "Sample",
+      "image": "https://picsum.photos/id/29/1992/744",
+      "description": "Quick sample item generated from admin utility."
+    },
+    {
+      "id": "prod_1774172501627_7266",
+      "name": "Sample Product 10",
+      "price": 49.99,
+      "category": "Sample",
+      "image": "https://picsum.photos/id/142/2175/1437",
       "description": "Quick sample item generated from admin utility."
     }
   ]
