@@ -1,14 +1,3 @@
-<p align="center">
-  <img src="https://pbxt.replicate.delivery/2PX94viD6lJSDVayQrGyDH7CGu7IjQ6e8HEtOGDeelefXRdOC/out.png" alt="CMS Banner" width="100%" />
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/platform-web-black?style=for-the-badge" alt="Platform Web" />
-  <img src="https://img.shields.io/badge/stack-vanilla_js-111827?style=for-the-badge&logo=javascript" alt="Vanilla JS" />
-  <a href="https://github.com/maharshimyriad/cms/stargazers"><img src="https://img.shields.io/github/stars/maharshimyriad/cms?style=for-the-badge" alt="GitHub Stars" /></a>
-  <a href="https://github.com/maharshimyriad/cms/network/members"><img src="https://img.shields.io/github/forks/maharshimyriad/cms?style=for-the-badge" alt="GitHub Forks" /></a>
-</p>
-
 <h1>Personal CMS / Product Manager 🌟</h1>
 
 <p>
