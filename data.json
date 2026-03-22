@@ -21,7 +21,7 @@
       "name": "Test123",
       "price": 40,
       "description": "Hello world",
-      "image": "https://lorempicsum.photos/seed/picsum/200/300",
+      "image": "https://picsum.photos/id/37/2200/1720",
       "category": "Electronics"
     },
     {
