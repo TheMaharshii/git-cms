@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git-CMS | Dataset Joiner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand-row">
+        <img src="assets/logo.svg" alt="Git-CMS Logo" class="brand-logo" width="44" height="44">
+        <div>
+          <h1>Dataset Joiner</h1>
+          <p class="header-subtitle">Inner, left, and full joins on JSON arrays</p>
+        </div>
+      </div>
+      <nav class="subnav">
+        <div class="subnav-group">
+          <span class="subnav-label">Core</span>
+          <a href="index.html" class="btn btn-secondary btn-sm">Catalog</a>
+          <a href="admin.html" class="btn btn-secondary btn-sm">Admin</a>
+          <a href="gallery.html" class="btn btn-secondary btn-sm">Gallery</a>
+          <a href="reports.html" class="btn btn-secondary btn-sm">Reports</a>
+          <a href="operations.html" class="btn btn-secondary btn-sm">Operations</a>
+          <a href="about.html" class="btn btn-secondary btn-sm">About</a>
+        </div>
+        <details class="subnav-more" open>
+          <summary class="btn btn-secondary btn-sm">More Tools</summary>
+          <div class="subnav-group subnav-group-tools">
+            <a href="studio.html" class="btn btn-secondary btn-sm">Studio</a>
+            <a href="json-workbench.html" class="btn btn-secondary btn-sm">JSON Workbench</a>
+            <a href="rule-engine.html" class="btn btn-secondary btn-sm">Rule Engine</a>
+            <a href="dataset-joiner.html" class="btn btn-secondary btn-sm is-active" aria-current="page">Dataset Joiner</a>
+            <a href="schema-studio.html" class="btn btn-secondary btn-sm">Schema Studio</a>
+            <a href="insights-lab.html" class="btn btn-secondary btn-sm">Insights Lab</a>
+            <a href="weather.html" class="btn btn-secondary btn-sm">Weather</a>
+            <a href="markets.html" class="btn btn-secondary btn-sm">Markets</a>
+            <a href="github-explorer.html" class="btn btn-secondary btn-sm">GitHub</a>
+            <a href="countries.html" class="btn btn-secondary btn-sm">Countries</a>
+            <a href="newsfeed.html" class="btn btn-secondary btn-sm">News</a>
+          </div>
+        </details>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="join-message" class="message" style="display:none"></div>
+
+    <section class="section">
+      <h2 class="section-title">Join Settings</h2>
+      <div class="api-toolbar">
+        <input id="join-left-path" type="text" value="items" placeholder="Left array path">
+        <input id="join-right-path" type="text" value="items" placeholder="Right array path">
+        <input id="join-left-key" type="text" value="id" placeholder="Left key">
+        <input id="join-right-key" type="text" value="id" placeholder="Right key">
+        <select id="join-type" aria-label="Join type">
+          <option value="inner">Inner Join</option>
+          <option value="left">Left Join</option>
+          <option value="full">Full Outer Join</option>
+        </select>
+      </div>
+      <div class="button-group" style="margin-top:0.7rem;">
+        <button id="join-load-left" class="btn btn-secondary" type="button">Load data.json to Left</button>
+        <button id="join-load-right" class="btn btn-secondary" type="button">Load data.json to Right</button>
+        <button id="join-run" class="btn btn-primary" type="button">Run Join</button>
+        <button id="join-download" class="btn btn-success" type="button">Download Joined JSON</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="api-toolbar">
+        <textarea id="join-left" class="studio-textarea" rows="12" placeholder="Left JSON"></textarea>
+        <textarea id="join-right" class="studio-textarea" rows="12" placeholder="Right JSON"></textarea>
+      </div>
+      <pre id="join-report" class="studio-list" style="margin-top:0.7rem; white-space:pre-wrap;"></pre>
+      <textarea id="join-output" class="studio-textarea" rows="14" placeholder="Joined output"></textarea>
+    </section>
+  </div>
+
+  <script src="dataset-joiner.js"></script>
+</body>
+</html>

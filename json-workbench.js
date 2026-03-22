@@ -199,8 +199,8 @@ function bindWorkbenchEvents() {
   document.getElementById('wb-merge-a-priority')?.addEventListener('click', () => wbMerge('a'));
   document.getElementById('wb-merge-b-priority')?.addEventListener('click', () => wbMerge('b'));
   document.getElementById('wb-download')?.addEventListener('click', wbDownloadResult);
-  document.getElementById('wb-load-catalog')?.addEventListener('click', () => wbLoadFileToArea('data.json', 'json-a', 'Catalog data'));
-  document.getElementById('wb-load-planner')?.addEventListener('click', () => wbLoadFileToArea('planner-data.json', 'json-b', 'Planner data'));
+  document.getElementById('wb-load-catalog-a')?.addEventListener('click', () => wbLoadFileToArea('data.json', 'json-a', 'Catalog data (A)'));
+  document.getElementById('wb-load-catalog-b')?.addEventListener('click', () => wbLoadFileToArea('data.json', 'json-b', 'Catalog data (B)'));
 }
 
 document.addEventListener('DOMContentLoaded', bindWorkbenchEvents);

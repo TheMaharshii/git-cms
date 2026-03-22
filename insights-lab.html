@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git-CMS | Insights Lab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand-row">
+        <img src="assets/logo.svg" alt="Git-CMS Logo" class="brand-logo" width="44" height="44">
+        <div>
+          <h1>Insights Lab</h1>
+          <p class="header-subtitle">Ad-hoc analytics with filters, group-by, and aggregates</p>
+        </div>
+      </div>
+      <nav class="subnav">
+        <div class="subnav-group">
+          <span class="subnav-label">Core</span>
+          <a href="index.html" class="btn btn-secondary btn-sm">Catalog</a>
+          <a href="admin.html" class="btn btn-secondary btn-sm">Admin</a>
+          <a href="gallery.html" class="btn btn-secondary btn-sm">Gallery</a>
+          <a href="reports.html" class="btn btn-secondary btn-sm">Reports</a>
+          <a href="operations.html" class="btn btn-secondary btn-sm">Operations</a>
+          <a href="about.html" class="btn btn-secondary btn-sm">About</a>
+        </div>
+        <details class="subnav-more" open>
+          <summary class="btn btn-secondary btn-sm">More Tools</summary>
+          <div class="subnav-group subnav-group-tools">
+            <a href="studio.html" class="btn btn-secondary btn-sm">Studio</a>
+            <a href="json-workbench.html" class="btn btn-secondary btn-sm">JSON Workbench</a>
+            <a href="rule-engine.html" class="btn btn-secondary btn-sm">Rule Engine</a>
+            <a href="dataset-joiner.html" class="btn btn-secondary btn-sm">Dataset Joiner</a>
+            <a href="schema-studio.html" class="btn btn-secondary btn-sm">Schema Studio</a>
+            <a href="insights-lab.html" class="btn btn-secondary btn-sm is-active" aria-current="page">Insights Lab</a>
+            <a href="weather.html" class="btn btn-secondary btn-sm">Weather</a>
+            <a href="markets.html" class="btn btn-secondary btn-sm">Markets</a>
+            <a href="github-explorer.html" class="btn btn-secondary btn-sm">GitHub</a>
+            <a href="countries.html" class="btn btn-secondary btn-sm">Countries</a>
+            <a href="newsfeed.html" class="btn btn-secondary btn-sm">News</a>
+          </div>
+        </details>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="insights-message" class="message" style="display:none"></div>
+
+    <section class="section">
+      <h2 class="section-title">Query Builder</h2>
+      <div class="api-toolbar">
+        <button id="insights-load" class="btn btn-primary" type="button">Load data.json</button>
+        <input id="insights-filter-field" type="text" value="category" placeholder="Filter field">
+        <select id="insights-filter-op" aria-label="Filter operator">
+          <option value="equals">equals</option>
+          <option value="contains">contains</option>
+          <option value="gt">gt</option>
+          <option value="lt">lt</option>
+        </select>
+        <input id="insights-filter-value" type="text" value="Electronics" placeholder="Filter value">
+        <input id="insights-group-by" type="text" value="category" placeholder="Group by field">
+        <select id="insights-metric" aria-label="Metric">
+          <option value="count">count</option>
+          <option value="sum">sum(price)</option>
+          <option value="avg">avg(price)</option>
+          <option value="min">min(price)</option>
+          <option value="max">max(price)</option>
+        </select>
+      </div>
+      <div class="button-group" style="margin-top:0.7rem;">
+        <button id="insights-run" class="btn btn-success" type="button">Run Insight Query</button>
+        <button id="insights-download" class="btn btn-secondary" type="button">Download Results</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <textarea id="insights-data" class="studio-textarea" rows="12" placeholder="Dataset"></textarea>
+      <pre id="insights-report" class="studio-list" style="margin-top:0.7rem; white-space:pre-wrap;"></pre>
+      <textarea id="insights-output" class="studio-textarea" rows="14" placeholder="Query result"></textarea>
+    </section>
+  </div>
+
+  <script src="insights-lab.js"></script>
+</body>
+</html>

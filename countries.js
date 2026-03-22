@@ -19,7 +19,7 @@ function fmtNumber(value) {
 }
 
 async function fetchCountries() {
-  const url = 'https://restcountries.com/v3.1/all?fields=name,capital,region,population,flags,languages';
+  const url = 'https://restcountries.com/v3.1/all?fields=name,capital,region,population,flags,nativeName';
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Countries API failed (${res.status})`);
   return res.json();
@@ -39,7 +39,7 @@ function renderCountries(rows) {
     const capital = Array.isArray(country.capital) ? country.capital[0] : 'N/A';
     const region = country.region || 'N/A';
     const population = fmtNumber(country.population || 0);
-    const language = country.languages ? Object.values(country.languages)[0] : 'N/A';
+    const nativeName = country.nativeNames ? Object.values(country.nativeNames)[0] : 'N/A';
 
     return `
       <article class="api-card">
@@ -48,7 +48,7 @@ function renderCountries(rows) {
         <p>Capital: ${capital}</p>
         <p>Region: ${region}</p>
         <p>Population: ${population}</p>
-        <p>Language: ${language}</p>
+        <p>nativeName: ${nativeName}</p>
       </article>
     `;
   }).join('');

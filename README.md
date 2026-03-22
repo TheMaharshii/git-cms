@@ -19,9 +19,12 @@
 <ul>
   <li><strong>gallery.html</strong>: Picsum masonry gallery with API caching, lightbox, filters, and load-more append behavior</li>
   <li><strong>reports.html</strong>: Visual analytics dashboard from <code>data.json</code> (stats, category chart, histogram, top products)</li>
-  <li><strong>planner.html</strong>: JSON-first Kanban board that loads from <code>planner-data.json</code> with deterministic card IDs</li>
-  <li><strong>planner-admin.html</strong>: GitHub-backed editor for <code>planner-data.json</code> (same owner/repo/branch/token flow as catalog admin)</li>
+  <li><strong>operations.html</strong>: Core data operations hub for validation, dedupe, normalization, and price anomaly detection</li>
   <li><strong>json-workbench.html</strong>: Advanced JSON validate/compare/merge tool with configurable array path and unique key</li>
+  <li><strong>rule-engine.html</strong>: Conditional transformation engine for bulk updates on catalog JSON</li>
+  <li><strong>dataset-joiner.html</strong>: Inner/left/full JSON dataset joins with key mapping and export</li>
+  <li><strong>schema-studio.html</strong>: Schema inference and structural validation against dataset drift</li>
+  <li><strong>insights-lab.html</strong>: Ad-hoc analytics with filter + group-by + aggregate metrics</li>
   <li><strong>studio.html</strong>: Mock catalog generator + JSON formatter/minifier/downloader for rapid testing</li>
   <li><strong>weather.html</strong>: Live weather + forecast search using Open-Meteo geocoding and forecast APIs</li>
   <li><strong>markets.html</strong>: Crypto market board (top coins, movement, volume) powered by CoinGecko API</li>
@@ -93,12 +96,18 @@
 ├── gallery.js
 ├── reports.html
 ├── reports.js
-├── planner.html
-├── planner.js
-├── planner-admin.html
-├── planner-admin.js
+├── operations.html
+├── operations.js
 ├── json-workbench.html
 ├── json-workbench.js
+├── rule-engine.html
+├── rule-engine.js
+├── dataset-joiner.html
+├── dataset-joiner.js
+├── schema-studio.html
+├── schema-studio.js
+├── insights-lab.html
+├── insights-lab.js
 ├── studio.html
 ├── studio.js
 ├── weather.html
@@ -114,7 +123,6 @@
 ├── github-api.js
 ├── style.css
 ├── data.json
-├── planner-data.json
 ├── about.html
 ├── README.md
 └── assets/

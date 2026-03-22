@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Git-CMS | Tech News Feed</title>
+  <title>Git-CMS | Operations</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,8 +12,8 @@
       <div class="brand-row">
         <img src="assets/logo.svg" alt="Git-CMS Logo" class="brand-logo" width="44" height="44">
         <div>
-          <h1>Tech News Feed</h1>
-          <p class="header-subtitle">Hacker News search feed via Algolia API</p>
+          <h1>Operations</h1>
+          <p class="header-subtitle">Data quality pipeline, cleanup, and anomaly detection</p>
         </div>
       </div>
       <nav class="subnav">
@@ -23,23 +23,23 @@
           <a href="admin.html" class="btn btn-secondary btn-sm">Admin</a>
           <a href="gallery.html" class="btn btn-secondary btn-sm">Gallery</a>
           <a href="reports.html" class="btn btn-secondary btn-sm">Reports</a>
-          <a href="operations.html" class="btn btn-secondary btn-sm">Operations</a>
+          <a href="operations.html" class="btn btn-secondary btn-sm is-active" aria-current="page">Operations</a>
           <a href="about.html" class="btn btn-secondary btn-sm">About</a>
         </div>
         <details class="subnav-more" open>
           <summary class="btn btn-secondary btn-sm">More Tools</summary>
           <div class="subnav-group subnav-group-tools">
             <a href="studio.html" class="btn btn-secondary btn-sm">Studio</a>
-            <a href="weather.html" class="btn btn-secondary btn-sm">Weather</a>
-            <a href="markets.html" class="btn btn-secondary btn-sm">Markets</a>
-            <a href="github-explorer.html" class="btn btn-secondary btn-sm">GitHub</a>
-            <a href="countries.html" class="btn btn-secondary btn-sm">Countries</a>
-            <a href="newsfeed.html" class="btn btn-secondary btn-sm is-active" aria-current="page">News</a>
             <a href="json-workbench.html" class="btn btn-secondary btn-sm">JSON Workbench</a>
             <a href="rule-engine.html" class="btn btn-secondary btn-sm">Rule Engine</a>
             <a href="dataset-joiner.html" class="btn btn-secondary btn-sm">Dataset Joiner</a>
             <a href="schema-studio.html" class="btn btn-secondary btn-sm">Schema Studio</a>
             <a href="insights-lab.html" class="btn btn-secondary btn-sm">Insights Lab</a>
+            <a href="weather.html" class="btn btn-secondary btn-sm">Weather</a>
+            <a href="markets.html" class="btn btn-secondary btn-sm">Markets</a>
+            <a href="github-explorer.html" class="btn btn-secondary btn-sm">GitHub</a>
+            <a href="countries.html" class="btn btn-secondary btn-sm">Countries</a>
+            <a href="newsfeed.html" class="btn btn-secondary btn-sm">News</a>
           </div>
         </details>
       </nav>
@@ -47,25 +47,27 @@
   </header>
 
   <div class="container">
-    <div id="news-error" class="message message-error" style="display:none"></div>
+    <div id="ops-message" class="message" style="display:none"></div>
 
     <section class="section">
+      <h2 class="section-title">Pipeline Controls</h2>
       <div class="api-toolbar">
-        <input id="news-query" type="text" placeholder="Search tech topics (e.g. ai, rust, react)">
-        <button id="news-search" class="btn btn-primary" type="button">Search</button>
+        <button id="ops-load" class="btn btn-primary" type="button">Load data.json</button>
+        <button id="ops-validate" class="btn btn-secondary" type="button">Validate Required Fields</button>
+        <button id="ops-dedupe" class="btn btn-secondary" type="button">Deduplicate IDs</button>
+        <button id="ops-normalize" class="btn btn-secondary" type="button">Normalize Categories</button>
+        <button id="ops-anomalies" class="btn btn-secondary" type="button">Detect Price Anomalies</button>
+        <button id="ops-download" class="btn btn-success" type="button">Download Cleaned JSON</button>
       </div>
-      <div id="news-meta" class="admin-summary">Ready</div>
+      <pre id="ops-report" class="studio-list" style="margin-top:0.7rem; white-space:pre-wrap;"></pre>
     </section>
 
     <section class="section">
-      <div id="news-list" class="api-grid"></div>
-    </section>
-
-    <section class="section text-center">
-      <button id="news-load-more" class="btn btn-secondary" type="button">Load More</button>
+      <h2 class="section-title">Working Dataset</h2>
+      <textarea id="ops-output" class="studio-textarea" rows="18" placeholder="Loaded and transformed JSON appears here"></textarea>
     </section>
   </div>
 
-  <script src="newsfeed.js"></script>
+  <script src="operations.js"></script>
 </body>
 </html>
