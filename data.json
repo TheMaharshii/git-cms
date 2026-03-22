@@ -31,6 +31,30 @@
       "description": "",
       "image": "https://picsum.photos/id/238/2000/1800",
       "category": "Sample"
+    },
+    {
+      "id": "prod_1774169889009_686",
+      "name": "Sample Product 5",
+      "price": 49.99,
+      "category": "Sample",
+      "image": "",
+      "description": "Quick sample item generated from admin utility."
+    },
+    {
+      "id": "prod_1774169889865_6279",
+      "name": "Sample Product 6",
+      "price": 49.99,
+      "category": "Sample",
+      "image": "",
+      "description": "Quick sample item generated from admin utility."
+    },
+    {
+      "id": "prod_1774169890569_4965",
+      "name": "Sample Product 7",
+      "price": 49.99,
+      "category": "Sample",
+      "image": "",
+      "description": "Quick sample item generated from admin utility."
     }
   ]
 }
